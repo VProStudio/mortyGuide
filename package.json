@@ -1,6 +1,6 @@
 {
   "name": "mortyguide",
-  "version": "1.0.0",
+  "version": "0.0.1",
   "main": "index.ts",
   "scripts": {
     "start": "expo start",
@@ -9,6 +9,8 @@
     "web": "expo start --web"
   },
   "dependencies": {
+    "@react-navigation/native-stack": "^7.3.14",
+    "axios": "^1.9.0",
     "expo": "~53.0.10",
     "expo-status-bar": "~2.2.3",
     "react": "19.0.0",
