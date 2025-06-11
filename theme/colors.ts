@@ -49,5 +49,13 @@ export const cardStyles = StyleSheet.create({
         color: '#999',
         marginTop: 16,
         textAlign: 'right',
-    }
+    },
+    container: {
+        padding: 10,
+        alignItems: 'center',
+        justifyContent: 'center',
+        width: '100%',
+        backgroundColor: '#ff6b6b'
+    },
+
 });

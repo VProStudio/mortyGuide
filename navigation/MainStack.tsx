@@ -7,7 +7,9 @@ const Stack = createNativeStackNavigator();
 export const MainStack = () => {
     return (
         <Stack.Navigator initialRouteName='Characters'>
-            <Stack.Screen name="Characters" component={CharactersListScreen} />
+            <Stack.Screen name="Characters"
+                component={CharactersListScreen}
+                options={{ headerShown: false }} />
             <Stack.Screen name="Details" component={CharactersDetailsScreen} />
         </Stack.Navigator>
     );

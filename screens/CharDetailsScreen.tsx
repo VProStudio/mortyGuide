@@ -1,51 +1,72 @@
 import React, { useEffect } from 'react';
-import { View, Text, FlatList } from 'react-native';
-import type { Character } from '@/utils/types';
+import { View, Text, ScrollView, Image } from 'react-native';
+import { useRoute, useNavigation } from '@react-navigation/native';
 import { cardStyles } from '@/theme/colors';
+import type { Character } from '@/utils/types';
 
+export const CharactersDetailsScreen = () => {
+    const route = useRoute();
+    const { character } = route.params as { character: Character };
+    const navigation = useNavigation();
 
-export const CharactersDetailsScreen = ({ character }: { character: Character }) => {
+    useEffect(() => {
+        navigation.setOptions({
+            title: character.name
+        });
+    }, [navigation, character]);
+
     return (
-        <View style={cardStyles.infoContainer}>
-            <Text style={cardStyles.name}>{character.name}</Text>
-            <Text style={cardStyles.id}>ID: {character.id}</Text>
+        <ScrollView>
+            <View style={cardStyles.infoContainer}>
+                <Text style={cardStyles.name}>{character.name}</Text>
+                <Text style={cardStyles.id}>ID: {character.id}</Text>
 
-            <View style={cardStyles.row}>
-                <Text style={cardStyles.label}>Status:</Text>
-                <Text style={cardStyles.value}>{character.status}</Text>
-            </View>
+                <Image
+                    source={{ uri: character.image }}
+                    style={{ width: '100%', height: 300, marginVertical: 10, borderRadius: 8 }}
+                    resizeMode="cover"
+                />
 
-            <View style={cardStyles.row}>
-                <Text style={cardStyles.label}>Species:</Text>
-                <Text style={cardStyles.value}>{character.species}</Text>
-            </View>
-
-            {character.type ? (
                 <View style={cardStyles.row}>
-                    <Text style={cardStyles.label}>Type:</Text>
-                    <Text style={cardStyles.value}>{character.type}</Text>
+                    <Text style={cardStyles.label}>Status:</Text>
+                    <Text style={cardStyles.value}>{character.status}</Text>
                 </View>
-            ) : null}
 
-            <View style={cardStyles.row}>
-                <Text style={cardStyles.label}>Gender:</Text>
-                <Text style={cardStyles.value}>{character.gender}</Text>
+                <View style={cardStyles.row}>
+                    <Text style={cardStyles.label}>Species:</Text>
+                    <Text style={cardStyles.value}>{character.species}</Text>
+                </View>
+
+                {character.type ? (
+                    <View style={cardStyles.row}>
+                        <Text style={cardStyles.label}>Type:</Text>
+                        <Text style={cardStyles.value}>{character.type}</Text>
+                    </View>
+                ) : null}
+
+                <View style={cardStyles.row}>
+                    <Text style={cardStyles.label}>Gender:</Text>
+                    <Text style={cardStyles.value}>{character.gender}</Text>
+                </View>
+
+                <View style={cardStyles.row}>
+                    <Text style={cardStyles.label}>Origin:</Text>
+                    <Text style={cardStyles.value}>{character.origin.name}</Text>
+                </View>
+
+                <View style={cardStyles.row}>
+                    <Text style={cardStyles.label}>Location:</Text>
+                    <Text style={cardStyles.value}>{character.location.name}</Text>
+                </View>
+
+                <View style={cardStyles.row}>
+                    <Text style={cardStyles.label}>Episodes:</Text>
+                    <Text style={cardStyles.value}>{character.episode.length}</Text>
+                </View>
+
+                <Text style={cardStyles.created}>Created: {new Date(character.created).toLocaleDateString()}</Text>
             </View>
+        </ScrollView>
 
-            <View style={cardStyles.row}>
-                <Text style={cardStyles.label}>Origin:</Text>
-                <Text style={cardStyles.value}>{character.origin.name}</Text>
-            </View>
-
-            <View style={cardStyles.row}>
-                <Text style={cardStyles.label}>Location:</Text>
-                <Text style={cardStyles.value}>{character.location.name}</Text>
-            </View>
-
-            <Text style={cardStyles.label}>Episodes:</Text>
-            <Text style={cardStyles.value}>{character.episode.length}</Text>
-
-            <Text style={cardStyles.created}>Created: {new Date(character.created).toLocaleDateString()}</Text>
-        </View>
     );
 };
