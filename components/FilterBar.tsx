@@ -7,6 +7,7 @@ import type { Filter } from '@/utils/types';
 type FilterBarProps = {
     filters: Filter;
     onChange: (filter: Partial<Filter>) => void;
+    disabled?: boolean;
 };
 
 export const FilterBar: React.FC<FilterBarProps> = ({ filters, onChange }) => {

@@ -7,10 +7,6 @@ import type { Character } from '@/utils/types';
 import type { RootStackParamList } from '@/utils/navigation';
 import type { NativeStackNavigationProp } from '@react-navigation/native-stack';
 
-// type Props = {
-//     character: Character;
-// };
-
 type DetailsScreenNavigationProp = NativeStackNavigationProp<
     RootStackParamList,
     'Details'
@@ -19,9 +15,22 @@ type DetailsScreenNavigationProp = NativeStackNavigationProp<
 export const CharacterCard = ({ character }: { character: Character }) => {
     const navigation = useNavigation<DetailsScreenNavigationProp>();
     const { colors } = React.useContext(ThemeContext);
+
     const handlePress = () => {
-        navigation.navigate('Details', { character });
+        const completeCharacter: Character = {
+            ...character,
+            type: character.type || '',
+            gender: character.gender || '',
+            origin: character.origin || { name: 'Unknown', url: '' },
+            location: character.location || { name: 'Unknown', url: '' },
+            episode: character.episode || [],
+            url: character.url || '',
+            created: character.created || new Date().toISOString()
+        };
+
+        navigation.navigate('Details', { character: completeCharacter });
     };
+
     return (
         <TouchableOpacity onPress={handlePress}>
             <View style={{ backgroundColor: colors.card, padding: 10, marginBottom: 10, borderRadius: 8 }}>

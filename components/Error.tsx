@@ -5,6 +5,7 @@ import { ThemeContext } from '@/theme/ThemeContext';
 type ErrorProps = {
     message: string;
     onRetry?: () => void;
+    buttonText?: string;
 };
 
 export const Error = ({ message, onRetry }: ErrorProps) => {

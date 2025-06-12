@@ -1,6 +1,7 @@
 import React from 'react';
 import { View, Text, StyleSheet, TouchableOpacity, Switch } from 'react-native';
 import { ThemeContext } from '@/theme/ThemeContext';
+import packageInfo from '../package.json';
 
 export const SettingsScreen = () => {
     const { theme, toggleTheme, colors } = React.useContext(ThemeContext);
@@ -20,7 +21,7 @@ export const SettingsScreen = () => {
                 />
             </View>
 
-            <Text style={[styles.version, { color: colors.text }]}>Version: 0.0.1</Text>
+            <Text style={[styles.version, { color: colors.text }]}>Version: {packageInfo.version}</Text>
         </View>
     );
 };

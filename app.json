@@ -4,9 +4,11 @@
     "slug": "mortyGuide",
     "version": "0.0.1",
     "orientation": "portrait",
+    "icon": "./assets/icons/mortyGuide(2048x2048).png",
     "userInterfaceStyle": "light",
     "newArchEnabled": true,
     "splash": {
+      "image": "./assets/icons/mortyGuide(2048x2048).png",
       "resizeMode": "contain",
       "backgroundColor": "#ffffff"
     },
@@ -15,6 +17,7 @@
     },
     "android": {
       "adaptiveIcon": {
+        "foregroundImage": "./assets/icons/mortyGuide(1024x1024).png",
         "backgroundColor": "#ffffff"
       },
       "edgeToEdgeEnabled": true

@@ -46,27 +46,28 @@ export const CharactersDetailsScreen = () => {
 
                 <View style={cardStyles.row}>
                     <Text style={cardStyles.label}>Gender:</Text>
-                    <Text style={cardStyles.value}>{character.gender}</Text>
+                    <Text style={cardStyles.value}>{character.gender || 'Unknown'}</Text>
                 </View>
 
                 <View style={cardStyles.row}>
                     <Text style={cardStyles.label}>Origin:</Text>
-                    <Text style={cardStyles.value}>{character.origin.name}</Text>
+                    <Text style={cardStyles.value}>{character.origin?.name || 'Unknown'}</Text>
                 </View>
 
                 <View style={cardStyles.row}>
                     <Text style={cardStyles.label}>Location:</Text>
-                    <Text style={cardStyles.value}>{character.location.name}</Text>
+                    <Text style={cardStyles.value}>{character.location?.name || 'Unknown'}</Text>
                 </View>
 
                 <View style={cardStyles.row}>
                     <Text style={cardStyles.label}>Episodes:</Text>
-                    <Text style={cardStyles.value}>{character.episode.length}</Text>
+                    <Text style={cardStyles.value}>{character.episode?.length || 0}</Text>
                 </View>
 
-                <Text style={cardStyles.created}>Created: {new Date(character.created).toLocaleDateString()}</Text>
+                <Text style={cardStyles.created}>
+                    Created: {character.created ? new Date(character.created).toLocaleDateString() : 'Unknown'}
+                </Text>
             </View>
         </ScrollView>
-
     );
 };

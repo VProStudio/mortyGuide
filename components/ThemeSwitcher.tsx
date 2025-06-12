@@ -1,7 +1,6 @@
 import React from 'react';
 import { TouchableOpacity, StyleSheet } from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons';
-import { ThemeProvider } from '@/theme/ThemeContext'
 import { ThemeContext } from '@/theme/ThemeContext';
 
 export const ThemeSwitcher = () => {
