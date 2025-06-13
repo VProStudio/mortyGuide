@@ -1,7 +1,7 @@
+import { Image, Animated, Easing, ImageSourcePropType } from 'react-native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { getFocusedRouteNameFromRoute } from '@react-navigation/native';
 import { SettingsScreen } from '@/screens/SettingsScreen';
-import { Image, Animated, Easing, ImageSourcePropType } from 'react-native';
 import { MainStack } from '@/navigation/MainStack';
 import { useEffect, useRef, FC } from 'react';
 
@@ -55,19 +55,26 @@ export const AppNavigator = () => {
         <Tab.Navigator
             screenOptions={{
                 tabBarStyle: {
-                    paddingBottom: 5,
-                }
+                },
+                headerStyle: {
+                    height: 80,
+                },
+                tabBarLabelStyle: {
+                    fontSize: 14,
+                    marginBottom: 5,
+                },
+
             }}
         >
             <Tab.Screen name="Main"
                 component={MainStack}
                 options={({ route }) => ({
                     title: getFocusedRouteNameFromRoute(route) === 'Details' ? 'Details' : 'Main',
-                    tabBarIcon: ({ focused, color, size }) => (
+                    tabBarIcon: ({ focused, size }) => (
                         <Image
                             source={focused
-                                ? require('@/assets/icons/bookOpened.png')
-                                : require('@/assets/icons/bookClosed.png')}
+                                ? require('@/resources/icons/bookOpened.png')
+                                : require('@/resources/icons/bookClosed.png')}
                             style={{
                                 width: size,
                                 height: size,
@@ -83,7 +90,7 @@ export const AppNavigator = () => {
                 options={{
                     tabBarIcon: ({ focused, size }) => (
                         <RotatingIcon
-                            source={require('@/assets/icons/gear.png')}
+                            source={require('@/resources/icons/gear.png')}
                             size={size}
                             isActive={focused}
                         />

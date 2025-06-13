@@ -1,7 +1,7 @@
-import React, { useEffect } from 'react';
-import { View, Text, ScrollView, Image } from 'react-native';
 import { useRoute, useNavigation } from '@react-navigation/native';
-import { cardStyles } from '@/theme/colors';
+import { View, Text, ScrollView, Image } from 'react-native';
+import { cardStyles } from '@/theme/styles';
+import React, { useEffect } from 'react';
 import type { Character } from '@/utils/types';
 
 export const CharactersDetailsScreen = () => {
@@ -11,14 +11,14 @@ export const CharactersDetailsScreen = () => {
 
     useEffect(() => {
         navigation.setOptions({
-            title: character.name
+            title: character.name,
+
         });
     }, [navigation, character]);
 
     return (
         <ScrollView>
             <View style={cardStyles.infoContainer}>
-                <Text style={cardStyles.name}>{character.name}</Text>
                 <Text style={cardStyles.id}>ID: {character.id}</Text>
 
                 <Image

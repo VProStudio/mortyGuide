@@ -2,13 +2,13 @@
   "expo": {
     "name": "mortyGuide",
     "slug": "mortyGuide",
-    "version": "0.0.1",
+    "version": "0.0.4",
     "orientation": "portrait",
-    "icon": "./assets/icons/mortyGuide(2048x2048).png",
+    "icon": "./resources/icons/mortyGuide(2048x2048).png",
     "userInterfaceStyle": "light",
     "newArchEnabled": true,
     "splash": {
-      "image": "./assets/icons/mortyGuide(2048x2048).png",
+      "image": "./resources/icons/mortyGuide(2048x2048).png",
       "resizeMode": "contain",
       "backgroundColor": "#ffffff"
     },
@@ -17,7 +17,7 @@
     },
     "android": {
       "adaptiveIcon": {
-        "foregroundImage": "./assets/icons/mortyGuide(1024x1024).png",
+        "foregroundImage": "./resources/icons/mortyGuide(2048x2048).png",
         "backgroundColor": "#ffffff"
       },
       "edgeToEdgeEnabled": true

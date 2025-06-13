@@ -40,8 +40,19 @@ export const cardStyles = StyleSheet.create({
         color: '#555',
         width: 80,
     },
+    textMain: {
+        fontFamily: 'CustomFont',
+        fontWeight: '500',
+        marginRight: 8,
+        color: '#555',
+        width: 80,
+    },
     value: {
-        color: '#333',
+        fontFamily: 'CustomFont',
+        fontWeight: '500',
+        marginRight: 8,
+        color: '#555',
+        width: 80,
         flex: 1,
     },
     created: {

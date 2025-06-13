@@ -1,11 +1,11 @@
-import React from 'react';
 import { View, Text, Image, TouchableOpacity } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
-import { cardStyles } from '@/theme/colors';
 import { ThemeContext } from '@/theme/ThemeContext';
-import type { Character } from '@/utils/types';
-import type { RootStackParamList } from '@/utils/navigation';
+import { cardStyles } from '@/theme/styles';
+import React from 'react';
 import type { NativeStackNavigationProp } from '@react-navigation/native-stack';
+import type { RootStackParamList } from '@/utils/navigation';
+import type { Character } from '@/utils/types';
 
 type DetailsScreenNavigationProp = NativeStackNavigationProp<
     RootStackParamList,
@@ -34,15 +34,22 @@ export const CharacterCard = ({ character }: { character: Character }) => {
     return (
         <TouchableOpacity onPress={handlePress}>
             <View style={{ backgroundColor: colors.card, padding: 10, marginBottom: 10, borderRadius: 8 }}>
-                <Text style={cardStyles.name}>{character.name}</Text>
+                <Text style={{
+                    fontFamily: 'CustomTitleFont',
+                    fontSize: 18,
+                    marginBottom: 4,
+                    color: colors.text
+                }}>
+                    {character.name}
+                </Text>
                 <Image source={{ uri: character.image }} style={{ width: 100, height: 100, borderRadius: 5 }} />
                 <View style={cardStyles.row}>
                     <Text style={cardStyles.label}>Status:</Text>
-                    <Text style={{ color: colors.text }}>{character.status}</Text>
+                    <Text style={cardStyles.textMain}>{character.status}</Text>
                 </View>
                 <View style={cardStyles.row}>
                     <Text style={cardStyles.label}>Species:</Text>
-                    <Text style={{ color: colors.text }}>{character.species}</Text>
+                    <Text style={cardStyles.textMain}>{character.species}</Text>
                 </View>
             </View>
         </TouchableOpacity>

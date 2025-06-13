@@ -56,23 +56,24 @@ export const FilterBar: React.FC<FilterBarProps> = ({ filters, onChange }) => {
 const styles = StyleSheet.create({
     container: {
         flexDirection: 'row',
-        justifyContent: 'space-between',
+        justifyContent: 'center',
         width: '100%',
+        marginTop: 8,
+        marginBottom: 8,
         padding: 16,
         borderBottomWidth: 1,
         borderBottomColor: '#ccc',
-        height: 90
+        height: 65,
+        gap: 10
     },
     filterGroup: {
-        height: 60,
         flexDirection: 'row',
         alignItems: 'center',
-        flex: 1,
+        maxWidth: 200,
     },
     picker: {
         height: 50,
-        width: 150,
+        width: 120,
         marginHorizontal: 4,
-        flex: 1
     },
 });

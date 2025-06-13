@@ -9,7 +9,6 @@ export const SettingsScreen = () => {
 
     return (
         <View style={[styles.container, { backgroundColor: colors.background }]}>
-            <Text style={[styles.title, { color: colors.text }]}>Settings</Text>
 
             <View style={styles.settingRow}>
                 <Text style={[styles.settingText, { color: colors.text }]}>Dark theme</Text>

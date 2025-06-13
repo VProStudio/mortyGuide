@@ -1,13 +1,13 @@
-import React, { useEffect, useState, useRef } from 'react';
-import { View, FlatList, Text } from 'react-native';
+import { getCharactersFromDB, initDatabase, saveCharactersToDB } from '@/services/database';
+import { OfflineMessage } from '@/components/OfflineMessage';
+import { useNetworkStatus } from '@/hooks/useNetworkStatus';
 import { CharacterCard } from '@/components/CharacterCard';
+import React, { useEffect, useState, useRef } from 'react';
+import { useCharacters } from '@/hooks/useCharacter';
+import { View, FlatList, Text } from 'react-native';
 import { FilterBar } from '@/components/FilterBar';
 import { Loader } from '@/components/Loader';
-import { OfflineMessage } from '@/components/OfflineMessage';
 import { Error } from '@/components/Error';
-import { useCharacters } from '@/hooks/useCharacter';
-import { useNetworkStatus } from '@/hooks/useNetworkStatus';
-import { getCharactersFromDB, initDatabase, saveCharactersToDB } from '@/services/database';
 import type { Character } from '@/utils/types';
 
 export const CharactersListScreen = () => {
