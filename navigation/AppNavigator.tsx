@@ -2,8 +2,10 @@ import { Image, Animated, Easing, ImageSourcePropType } from 'react-native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { getFocusedRouteNameFromRoute } from '@react-navigation/native';
 import { SettingsScreen } from '@/screens/SettingsScreen';
+import { ThemeContext } from '@/theme/ThemeContext';
 import { MainStack } from '@/navigation/MainStack';
-import { useEffect, useRef, FC } from 'react';
+import { useEffect, useRef, FC, useContext } from 'react';
+import React from 'react';
 
 const Tab = createBottomTabNavigator();
 
@@ -51,19 +53,30 @@ const RotatingIcon: FC<RotatingIconProps> = ({ source, size, isActive }) => {
 };
 
 export const AppNavigator = () => {
+    const { colors } = useContext(ThemeContext);
     return (
         <Tab.Navigator
             screenOptions={{
                 tabBarStyle: {
+                    backgroundColor: colors.tabBar,
                 },
                 headerStyle: {
                     height: 80,
+                    backgroundColor: colors.header,
+
+                    shadowColor: colors.text,
+                    elevation: 3,
+                    shadowOffset: { width: 0, height: 2 },
+                    shadowOpacity: 0.2,
+                    shadowRadius: 2,
                 },
+                headerTintColor: colors.text,
                 tabBarLabelStyle: {
                     fontSize: 14,
                     marginBottom: 5,
                 },
-
+                tabBarActiveTintColor: colors.text,
+                tabBarInactiveTintColor: colors.text,
             }}
         >
             <Tab.Screen name="Main"
@@ -78,7 +91,8 @@ export const AppNavigator = () => {
                             style={{
                                 width: size,
                                 height: size,
-                                resizeMode: 'contain'
+                                resizeMode: 'contain',
+
                             }}
                         />
                     ),

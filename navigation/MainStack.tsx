@@ -2,6 +2,8 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { CharactersDetailsScreen } from '@/screens/CharDetailsScreen';
 import { View, Text, TouchableOpacity, Image } from 'react-native';
 import { CharactersListScreen } from '@/screens/CharListScreen';
+import { ThemeContext } from '@/theme/ThemeContext';
+import React from 'react';
 import type { Character } from '@/utils/types';
 
 type DetailsScreenParams = {
@@ -11,6 +13,7 @@ type DetailsScreenParams = {
 const Stack = createNativeStackNavigator();
 
 export const MainStack = () => {
+    const { colors } = React.useContext(ThemeContext);
     return (
         <Stack.Navigator initialRouteName='Characters'>
             <Stack.Screen name="Characters"
@@ -27,8 +30,9 @@ export const MainStack = () => {
                                 height: 50,
                                 flexDirection: 'row',
                                 alignItems: 'center',
-                                backgroundColor: '#f4f4f4',
-                                paddingHorizontal: 10
+                                backgroundColor: colors.background,
+                                paddingHorizontal: 10,
+                                opacity: 0.9,
                             }}>
                                 <TouchableOpacity onPress={() => navigation.goBack()}>
                                     <Image
@@ -45,7 +49,7 @@ export const MainStack = () => {
                                     fontFamily: 'CustomTitleFont',
                                     fontSize: 24,
                                     marginBottom: 4,
-                                    color: 'black',
+                                    color: colors.text,
                                     marginLeft: 15
                                 }}>
                                     {params?.character?.name || 'Details'}

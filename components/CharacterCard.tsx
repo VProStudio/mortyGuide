@@ -1,7 +1,8 @@
 import { View, Text, Image, TouchableOpacity } from 'react-native';
+import { cardStyles, getStatusStyle } from '@/theme/styles';
 import { useNavigation } from '@react-navigation/native';
 import { ThemeContext } from '@/theme/ThemeContext';
-import { cardStyles } from '@/theme/styles';
+import { DetailRow } from '@/components/DetailRow';
 import React from 'react';
 import type { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import type { RootStackParamList } from '@/utils/navigation';
@@ -12,9 +13,11 @@ type DetailsScreenNavigationProp = NativeStackNavigationProp<
     'Details'
 >;
 
+
 export const CharacterCard = ({ character }: { character: Character }) => {
     const navigation = useNavigation<DetailsScreenNavigationProp>();
-    const { colors } = React.useContext(ThemeContext);
+    const { theme, colors } = React.useContext(ThemeContext);
+    const statusStyle = getStatusStyle(character.status, theme);
 
     const handlePress = () => {
         const completeCharacter: Character = {
@@ -33,25 +36,33 @@ export const CharacterCard = ({ character }: { character: Character }) => {
 
     return (
         <TouchableOpacity onPress={handlePress}>
-            <View style={{ backgroundColor: colors.card, padding: 10, marginBottom: 10, borderRadius: 8 }}>
-                <Text style={{
-                    fontFamily: 'CustomTitleFont',
-                    fontSize: 18,
-                    marginBottom: 4,
-                    color: colors.text
-                }}>
-                    {character.name}
-                </Text>
-                <Image source={{ uri: character.image }} style={{ width: 100, height: 100, borderRadius: 5 }} />
-                <View style={cardStyles.row}>
-                    <Text style={cardStyles.label}>Status:</Text>
-                    <Text style={cardStyles.textMain}>{character.status}</Text>
-                </View>
-                <View style={cardStyles.row}>
-                    <Text style={cardStyles.label}>Species:</Text>
-                    <Text style={cardStyles.textMain}>{character.species}</Text>
+            <View style={[
+                cardStyles.cardInfoContainer,
+                {
+                    backgroundColor: colors.card,
+                    shadowColor: colors.text,
+                }
+
+            ]}>
+                <Image source={{ uri: character.image }} style={[
+                    cardStyles.imageMain,
+                    statusStyle
+                ]}
+                />
+                <View style={cardStyles.column}>
+                    <Text style={{
+                        fontFamily: 'CustomTitleFont',
+                        fontSize: 24,
+                        marginBottom: 16,
+                        color: colors.text
+                    }}>
+                        {character.name}
+                    </Text>
+                    <DetailRow label="Status" value={character.status} />
+                    <DetailRow label="Species" value={character.species} />
                 </View>
             </View>
         </TouchableOpacity>
     );
 };
+

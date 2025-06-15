@@ -1,8 +1,8 @@
-import React from 'react';
-import { View, Text, StyleSheet } from 'react-native';
-import { Picker } from '@react-native-picker/picker';
+import { View, StyleSheet } from 'react-native';
 import { ThemeContext } from '@/theme/ThemeContext';
+import { CustomPicker } from '@/components/CustomPicker';
 import type { Filter } from '@/utils/types';
+import React from 'react';
 
 type FilterBarProps = {
     filters: Filter;
@@ -21,34 +21,31 @@ export const FilterBar: React.FC<FilterBarProps> = ({ filters, onChange }) => {
         onChange({ ...filters, species: species as Filter['species'] });
     };
 
+    const statusItems = [
+        { label: "Alive", value: "Alive" },
+        { label: "Dead", value: "Dead" },
+        { label: "Unknown", value: "unknown" }
+    ];
+
+    const speciesItems = [
+        { label: "Alien", value: "Alien" },
+        { label: "Human", value: "Human" }
+    ];
+
     return (
         <View style={[styles.container, { backgroundColor: colors.card }]}>
-            <View style={styles.filterGroup}>
-                <Text style={{ color: colors.text }}>Status</Text>
-                <Picker
-                    selectedValue={filters.status}
-                    onValueChange={handleChangeStatus}
-                    style={[styles.picker, { color: colors.text }]}
-                >
-                    <Picker.Item label="All" value="" />
-                    <Picker.Item label="Alive" value="Alive" />
-                    <Picker.Item label="Dead" value="Dead" />
-                    <Picker.Item label="Unknown" value="unknown" />
-                </Picker>
-            </View>
-
-            <View style={styles.filterGroup}>
-                <Text style={{ color: colors.text }}>Species</Text>
-                <Picker
-                    selectedValue={filters.species}
-                    onValueChange={handleChangeSpecies}
-                    style={[styles.picker, { color: colors.text }]}
-                >
-                    <Picker.Item label="All" value="" />
-                    <Picker.Item label="Alien" value="Alien" />
-                    <Picker.Item label="Human" value="Human" />
-                </Picker>
-            </View>
+            <CustomPicker
+                label="Status"
+                value={filters.status}
+                onValueChange={handleChangeStatus}
+                items={statusItems}
+            />
+            <CustomPicker
+                label="Species"
+                value={filters.species}
+                onValueChange={handleChangeSpecies}
+                items={speciesItems}
+            />
         </View>
     );
 };
@@ -65,15 +62,5 @@ const styles = StyleSheet.create({
         borderBottomColor: '#ccc',
         height: 65,
         gap: 10
-    },
-    filterGroup: {
-        flexDirection: 'row',
-        alignItems: 'center',
-        maxWidth: 200,
-    },
-    picker: {
-        height: 50,
-        width: 120,
-        marginHorizontal: 4,
-    },
+    }
 });

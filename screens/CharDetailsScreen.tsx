@@ -1,12 +1,20 @@
 import { useRoute, useNavigation } from '@react-navigation/native';
 import { View, Text, ScrollView, Image } from 'react-native';
-import { cardStyles } from '@/theme/styles';
-import React, { useEffect } from 'react';
+import { cardStyles, getStatusStyle } from '@/theme/styles';
+import { ThemeContext } from '@/theme/ThemeContext';
+import { DetailRow } from '@/components/DetailRow';
+import React, { useEffect, useMemo } from 'react';
 import type { Character } from '@/utils/types';
+
 
 export const CharactersDetailsScreen = () => {
     const route = useRoute();
     const { character } = route.params as { character: Character };
+    const { theme, colors } = React.useContext(ThemeContext);
+    const statusStyle = useMemo(() =>
+        getStatusStyle(character.status, theme),
+        [character.status, theme]
+    );
     const navigation = useNavigation();
 
     useEffect(() => {
@@ -17,57 +25,36 @@ export const CharactersDetailsScreen = () => {
     }, [navigation, character]);
 
     return (
-        <ScrollView>
-            <View style={cardStyles.infoContainer}>
-                <Text style={cardStyles.id}>ID: {character.id}</Text>
+        <ScrollView style={{ backgroundColor: colors.background }}>
+            <View style={[
+                cardStyles.detailInfoContainer,
+                {
+                    backgroundColor: colors.card,
+                    shadowColor: colors.text,
+                }
+            ]}>
+                <Text style={[cardStyles.id, { color: colors.text }]}>ID: {character.id}</Text>
 
                 <Image
                     source={{ uri: character.image }}
-                    style={{ width: '100%', height: 300, marginVertical: 10, borderRadius: 8 }}
+                    style={[{ width: '100%', height: 300, marginVertical: 10, borderRadius: 8, marginBottom: 50 },
+                        statusStyle
+                    ]}
                     resizeMode="cover"
                 />
 
-                <View style={cardStyles.row}>
-                    <Text style={cardStyles.label}>Status:</Text>
-                    <Text style={cardStyles.value}>{character.status}</Text>
-                </View>
+                <DetailRow label="Status" value={character.status} />
+                <DetailRow label="Species" value={character.species} />
+                <DetailRow label="Type" value={character.type} showIfEmpty={false} />
+                <DetailRow label="Gender" value={character.gender} />
+                <DetailRow label="Origin" value={character.origin?.name} />
+                <DetailRow label="Location" value={character.location?.name} />
+                <DetailRow label="Episodes" value={character.episode?.length || 0} />
 
-                <View style={cardStyles.row}>
-                    <Text style={cardStyles.label}>Species:</Text>
-                    <Text style={cardStyles.value}>{character.species}</Text>
-                </View>
-
-                {character.type ? (
-                    <View style={cardStyles.row}>
-                        <Text style={cardStyles.label}>Type:</Text>
-                        <Text style={cardStyles.value}>{character.type}</Text>
-                    </View>
-                ) : null}
-
-                <View style={cardStyles.row}>
-                    <Text style={cardStyles.label}>Gender:</Text>
-                    <Text style={cardStyles.value}>{character.gender || 'Unknown'}</Text>
-                </View>
-
-                <View style={cardStyles.row}>
-                    <Text style={cardStyles.label}>Origin:</Text>
-                    <Text style={cardStyles.value}>{character.origin?.name || 'Unknown'}</Text>
-                </View>
-
-                <View style={cardStyles.row}>
-                    <Text style={cardStyles.label}>Location:</Text>
-                    <Text style={cardStyles.value}>{character.location?.name || 'Unknown'}</Text>
-                </View>
-
-                <View style={cardStyles.row}>
-                    <Text style={cardStyles.label}>Episodes:</Text>
-                    <Text style={cardStyles.value}>{character.episode?.length || 0}</Text>
-                </View>
-
-                <Text style={cardStyles.created}>
+                <Text style={[cardStyles.created, { color: colors.text }]}>
                     Created: {character.created ? new Date(character.created).toLocaleDateString() : 'Unknown'}
                 </Text>
             </View>
         </ScrollView>
     );
-};
+}

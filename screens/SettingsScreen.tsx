@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, Text, StyleSheet, TouchableOpacity, Switch } from 'react-native';
+import { View, Text, StyleSheet, Switch } from 'react-native';
 import { ThemeContext } from '@/theme/ThemeContext';
 import packageInfo from '../package.json';
 

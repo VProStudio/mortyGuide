@@ -1,6 +1,6 @@
-import React from 'react';
 import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
 import { ThemeContext } from '@/theme/ThemeContext';
+import React from 'react';
 
 type ErrorProps = {
     message: string;
