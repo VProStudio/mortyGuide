@@ -1,8 +1,8 @@
 import { View, Text, Image, TouchableOpacity } from 'react-native';
 import { cardStyles, getStatusStyle } from '@/theme/styles';
 import { useNavigation } from '@react-navigation/native';
-import { ThemeContext } from '@/theme/ThemeContext';
 import { DetailRow } from '@/components/DetailRow';
+import { useTheme } from '@/hooks/useTheme';
 import React from 'react';
 import type { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import type { RootStackParamList } from '@/utils/navigation';
@@ -14,9 +14,9 @@ type DetailsScreenNavigationProp = NativeStackNavigationProp<
 >;
 
 
-export const CharacterCard = ({ character }: { character: Character }) => {
+const CharacterCardComponent = ({ character }: { character: Character }) => {
     const navigation = useNavigation<DetailsScreenNavigationProp>();
-    const { theme, colors } = React.useContext(ThemeContext);
+    const { theme, colors } = useTheme();
     const statusStyle = getStatusStyle(character.status, theme);
 
     const handlePress = () => {
@@ -33,6 +33,11 @@ export const CharacterCard = ({ character }: { character: Character }) => {
 
         navigation.navigate('Details', { character: completeCharacter });
     };
+
+    const cardDetails = [
+        { label: "Status", value: character.status },
+        { label: "Species", value: character.species }
+    ];
 
     return (
         <TouchableOpacity onPress={handlePress}>
@@ -58,11 +63,17 @@ export const CharacterCard = ({ character }: { character: Character }) => {
                     }}>
                         {character.name}
                     </Text>
-                    <DetailRow label="Status" value={character.status} />
-                    <DetailRow label="Species" value={character.species} />
+                    {cardDetails.map((detail, index) => (
+                        <DetailRow
+                            key={index}
+                            label={detail.label}
+                            value={detail.value}
+                        />
+                    ))}
                 </View>
             </View>
         </TouchableOpacity>
     );
 };
 
+export const CharacterCard = React.memo(CharacterCardComponent);

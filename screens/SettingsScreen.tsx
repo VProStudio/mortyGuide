@@ -1,10 +1,10 @@
 import React from 'react';
 import { View, Text, StyleSheet, Switch } from 'react-native';
-import { ThemeContext } from '@/theme/ThemeContext';
+import { useTheme } from '@/hooks/useTheme';
 import packageInfo from '../package.json';
 
 export const SettingsScreen = () => {
-    const { theme, toggleTheme, colors } = React.useContext(ThemeContext);
+    const { theme, toggleTheme, colors } = useTheme();
     const isDarkMode = theme === 'dark';
 
     return (

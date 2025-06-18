@@ -1,7 +1,7 @@
-import React from 'react';
-import { View, Text } from 'react-native';
 import { cardStyles } from '@/theme/styles';
-import { ThemeContext } from '@/theme/ThemeContext';
+import { useTheme } from '@/hooks/useTheme';
+import { View, Text } from 'react-native';
+import React from 'react';
 
 type DetailRowProps = {
     label: string;
@@ -9,8 +9,8 @@ type DetailRowProps = {
     showIfEmpty?: boolean;
 };
 
-export const DetailRow = ({ label, value, showIfEmpty = true }: DetailRowProps) => {
-    const { colors } = React.useContext(ThemeContext);
+const DetailRowComponent = ({ label, value, showIfEmpty = true }: DetailRowProps) => {
+    const { colors } = useTheme();
 
     if (!value && !showIfEmpty) return null;
 
@@ -25,3 +25,5 @@ export const DetailRow = ({ label, value, showIfEmpty = true }: DetailRowProps) 
         </View>
     );
 };
+
+export const DetailRow = React.memo(DetailRowComponent);

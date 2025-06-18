@@ -1,4 +1,5 @@
 import { StyleSheet } from 'react-native';
+import { CharacterStatus } from '@/utils/constants';
 
 
 export const colors = {
@@ -37,10 +38,10 @@ export const getStatusStyle = (status: string, theme: 'light' | 'dark') => {
     const themeColors = theme === 'dark' ? colors.dark : colors.light;
 
     switch (status.toLowerCase()) {
-        case 'alive':
+        case CharacterStatus.ALIVE.toLowerCase():
             color = themeColors.status.alive;
             break;
-        case 'dead':
+        case CharacterStatus.DEAD.toLowerCase():
             color = themeColors.status.dead;
             break;
         default:

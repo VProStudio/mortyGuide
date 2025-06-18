@@ -1,8 +1,9 @@
-import { View, StyleSheet } from 'react-native';
-import { ThemeContext } from '@/theme/ThemeContext';
+import { STATUS_OPTIONS, SPECIES_OPTIONS } from '@/utils/constants';
 import { CustomPicker } from '@/components/CustomPicker';
-import type { Filter } from '@/utils/types';
+import { useTheme } from '@/hooks/useTheme';
+import { View, StyleSheet } from 'react-native';
 import React from 'react';
+import type { Filter } from '@/utils/types';
 
 type FilterBarProps = {
     filters: Filter;
@@ -11,7 +12,7 @@ type FilterBarProps = {
 };
 
 export const FilterBar: React.FC<FilterBarProps> = ({ filters, onChange }) => {
-    const { colors } = React.useContext(ThemeContext);
+    const { colors } = useTheme();
 
     const handleChangeStatus = (status: string) => {
         onChange({ ...filters, status: status as Filter['status'] });
@@ -21,30 +22,19 @@ export const FilterBar: React.FC<FilterBarProps> = ({ filters, onChange }) => {
         onChange({ ...filters, species: species as Filter['species'] });
     };
 
-    const statusItems = [
-        { label: "Alive", value: "Alive" },
-        { label: "Dead", value: "Dead" },
-        { label: "Unknown", value: "unknown" }
-    ];
-
-    const speciesItems = [
-        { label: "Alien", value: "Alien" },
-        { label: "Human", value: "Human" }
-    ];
-
     return (
         <View style={[styles.container, { backgroundColor: colors.card }]}>
             <CustomPicker
                 label="Status"
                 value={filters.status}
                 onValueChange={handleChangeStatus}
-                items={statusItems}
+                items={STATUS_OPTIONS}
             />
             <CustomPicker
                 label="Species"
                 value={filters.species}
                 onValueChange={handleChangeSpecies}
-                items={speciesItems}
+                items={SPECIES_OPTIONS}
             />
         </View>
     );

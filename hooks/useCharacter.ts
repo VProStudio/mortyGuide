@@ -1,8 +1,8 @@
-import { useEffect, useState } from 'react';
+import { charactersActions } from '@/store/characterSlice';
 import { useDispatch, useSelector } from 'react-redux';
 import { fetchCharacters } from '@/services/api';
+import { useEffect, useState } from 'react';
 import { RootState } from '@/store/store';
-import { charactersActions } from '@/store/characterSlice';
 import type { Filter } from '@/utils/types';
 
 const { setCharacters, setPage, setFilters } = charactersActions;
@@ -12,6 +12,7 @@ export const useCharacters = () => {
     const { page, filters, characters } = useSelector((state: RootState) => state.characters);
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState<string | null>(null);
+    const [hasReachedEnd, setHasReachedEnd] = useState(false);
 
     const handleFilterChange = (newFilters: Partial<Filter>) => {
         const updatedFilters = { ...filters, ...newFilters };
@@ -20,11 +21,20 @@ export const useCharacters = () => {
 
     const loadMore = async () => {
         try {
+            if (hasReachedEnd) return;
+
             setLoading(true);
             setError(null);
-            const newData = await fetchCharacters(page + 1, filters);
-            dispatch(setCharacters([...characters, ...newData]));
-            dispatch(setPage(page + 1));
+            const data = await fetchCharacters(page + 1, filters);
+
+            if (data && data.results) {
+                dispatch(setCharacters([...characters, ...data.results]));
+                dispatch(setPage(page + 1));
+
+                if (data.info && page + 1 >= data.info.pages) {
+                    setHasReachedEnd(true);
+                }
+            }
         } catch (err) {
             setError(err instanceof Error ? err.message : 'Data loading error');
         } finally {
@@ -36,10 +46,18 @@ export const useCharacters = () => {
         try {
             setLoading(true);
             setError(null);
+            setHasReachedEnd(false);
             dispatch(setPage(0));
             dispatch(setCharacters([]));
-            const newData = await fetchCharacters(1, filters);
-            dispatch(setCharacters(newData));
+            const data = await fetchCharacters(1, filters);
+
+            if (data && data.results) {
+                dispatch(setCharacters(data.results));
+
+                if (data.info && data.info.pages <= 1) {
+                    setHasReachedEnd(true);
+                }
+            }
         } catch (err) {
             setError(err instanceof Error ? err.message : 'Data loading error');
         } finally {

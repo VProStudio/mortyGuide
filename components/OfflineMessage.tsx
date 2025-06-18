@@ -1,9 +1,9 @@
-import React from 'react';
 import { View, Text, StyleSheet } from 'react-native';
-import { ThemeContext } from '@/theme/ThemeContext';
+import { useTheme } from '@/hooks/useTheme';
+import React from 'react';
 
 export const OfflineMessage = () => {
-    const { colors } = React.useContext(ThemeContext);
+    const { colors } = useTheme();
 
     return (
         <View style={[styles.container, { backgroundColor: '#ff6b6b' }]}>

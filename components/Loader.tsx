@@ -1,9 +1,9 @@
-import React from 'react';
 import { ActivityIndicator, View } from 'react-native';
-import { ThemeContext } from '@/theme/ThemeContext';
+import { useTheme } from '@/hooks/useTheme';
+import React from 'react';
 
 export const Loader = () => {
-    const { colors } = React.useContext(ThemeContext);
+    const { colors } = useTheme();
     return (
         <View style={{ padding: 10 }}>
             <ActivityIndicator color={colors.text} />

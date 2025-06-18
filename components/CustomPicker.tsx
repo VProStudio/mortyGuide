@@ -1,8 +1,8 @@
 import { View, Text, StyleSheet, TouchableOpacity, Modal } from 'react-native';
-import { ThemeContext } from '@/theme/ThemeContext';
+import { useTheme } from '@/hooks/useTheme';
 import React, { useState } from 'react';
 
-export type CustomPickerProps = {
+type CustomPickerProps = {
     label?: string;
     value: string;
     onValueChange: (value: string) => void;
@@ -17,7 +17,7 @@ export const CustomPicker: React.FC<CustomPickerProps> = ({
     items,
     placeholder = { label: 'All', value: '' }
 }) => {
-    const { colors } = React.useContext(ThemeContext);
+    const { colors } = useTheme();
     const [isOpen, setIsOpen] = useState(false);
 
     const selectedItem = value ? items.find(item => item.value === value) : placeholder;

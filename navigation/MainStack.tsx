@@ -2,7 +2,7 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { CharactersDetailsScreen } from '@/screens/CharDetailsScreen';
 import { View, Text, TouchableOpacity, Image } from 'react-native';
 import { CharactersListScreen } from '@/screens/CharListScreen';
-import { ThemeContext } from '@/theme/ThemeContext';
+import { useTheme } from '@/hooks/useTheme';
 import React from 'react';
 import type { Character } from '@/utils/types';
 
@@ -13,7 +13,7 @@ type DetailsScreenParams = {
 const Stack = createNativeStackNavigator();
 
 export const MainStack = () => {
-    const { colors } = React.useContext(ThemeContext);
+    const { colors } = useTheme();
     return (
         <Stack.Navigator initialRouteName='Characters'>
             <Stack.Screen name="Characters"

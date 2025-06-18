@@ -1,26 +1,45 @@
-import { getCharactersFromDB, initDatabase, saveCharactersToDB } from '@/services/database';
-import React, { useEffect, useState, useRef, useMemo, useCallback } from 'react';
+import { View, FlatList, Dimensions, useWindowDimensions } from 'react-native';
+import { EmptyDataMessage } from '@/components/EmptyDataMessage';
 import { OfflineMessage } from '@/components/OfflineMessage';
 import { useNetworkStatus } from '@/hooks/useNetworkStatus';
 import { CharacterCard } from '@/components/CharacterCard';
+import { useOfflineData } from '@/hooks/useOfflineData';
 import { useCharacters } from '@/hooks/useCharacter';
-import { View, FlatList, Text } from 'react-native';
-import { ThemeContext } from '@/theme/ThemeContext';
+import React, { useMemo, useCallback } from 'react';
 import { FilterBar } from '@/components/FilterBar';
 import { Loader } from '@/components/Loader';
+import { useTheme } from '@/hooks/useTheme';
 import { Error } from '@/components/Error';
 import type { Character } from '@/utils/types';
 
 export const CharactersListScreen = () => {
-    const { colors } = React.useContext(ThemeContext);
+    const { colors } = useTheme();
     const { characters, loading, error, filters, setFilters, loadMore, refresh } = useCharacters();
     const { isConnected } = useNetworkStatus();
-    const [offlineData, setOfflineData] = useState<Character[]>([]);
-    const [offlineLoading, setOfflineLoading] = useState(true);
-    const [offlineError, setOfflineError] = useState<string | null>(null);
-    const lastSaveTimeRef = useRef(0);
-    const noDataMessage = "No data to display";
+    const {
+        offlineData,
+        offlineLoading,
+        offlineError,
+        resetOfflineError
+    } = useOfflineData(isConnected, characters);
 
+    const { width, height } = useWindowDimensions();
+
+    const itemHeight = useMemo(() => {
+        return width > 600 ? 180 : 150;
+    }, [width]);
+
+    const optimizedParams = useMemo(() => {
+        const itemsPerScreen = Math.ceil(height / itemHeight);
+
+        return {
+            initialNumToRender: itemsPerScreen + 2,
+            windowSize: Math.max(5, Math.ceil(itemsPerScreen / 2)),
+            maxToRenderPerBatch: Math.max(5, Math.ceil(itemsPerScreen / 3)),
+        };
+    }, [height, itemHeight]);
+
+    const noDataMessage = "No data to display";
 
     const displayData = useMemo(() =>
         isConnected ? characters : offlineData,
@@ -42,62 +61,33 @@ export const CharactersListScreen = () => {
         []
     );
 
-    const ListFooterComponent = useMemo(() =>
-        (loading || (!isConnected && offlineLoading)) ? <Loader /> : null,
-        [loading, isConnected, offlineLoading, displayData.length, noDataMessage]
+    const getItemLayout = useCallback(
+        (_: any, index: number) => ({
+            length: itemHeight,
+            offset: itemHeight * index,
+            index,
+        }),
+        [itemHeight]
     );
 
-    const ListEmptyComponent = useMemo(() => {
-        return !loading && !offlineLoading && displayData.length === 0 ? (
-            <View style={{ padding: 20, alignItems: 'center' }}>
-                <Text>{noDataMessage}</Text>
-            </View>
-        ) : null;
-    }, [loading, offlineLoading, displayData.length]);
+    const ListFooterComponent = useMemo(() =>
+        (loading || (!isConnected && offlineLoading)) ? <Loader /> : null,
+        [loading, isConnected, offlineLoading]
+    );
 
-    useEffect(() => {
-        initDatabase().catch(err => console.error('Error initializing database:', err));
-    }, []);
-
-    useEffect(() => {
-        if (isConnected && characters.length > 0) {
-            const now = Date.now();
-            if (now - lastSaveTimeRef.current > 5000) {
-                lastSaveTimeRef.current = now;
-                saveCharactersToDB(characters).catch(err =>
-                    console.error('Error saving characters to DB:', err)
-                );
-            }
-        }
-    }, [isConnected, characters]);
-
-    useEffect(() => {
-        const loadOfflineData = async () => {
-            setOfflineLoading(true);
-            setOfflineError(null);
-            try {
-                const offlineCharacters = await getCharactersFromDB();
-                setOfflineData(offlineCharacters);
-            } catch (err) {
-                console.error('Error loading offline data:', err);
-                setOfflineError('Failed to load saved data');
-            } finally {
-                setOfflineLoading(false);
-            }
-        };
-
-        if (!isConnected) {
-            loadOfflineData();
-        }
-    }, [isConnected]);
-
+    const ListEmptyComponent = useMemo(() =>
+        !loading && !offlineLoading && displayData.length === 0
+            ? <EmptyDataMessage message={noDataMessage} />
+            : null,
+        [loading, offlineLoading, displayData.length]
+    );
 
     if (error && isConnected) {
         return <Error message={error} onRetry={refresh} />;
     }
 
     if (!isConnected && offlineError && !offlineLoading) {
-        return <Error message={offlineError} onRetry={() => setOfflineError(null)} />;
+        return <Error message={offlineError} onRetry={resetOfflineError} />;
     }
 
     if (!isConnected && offlineData.length === 0 && !offlineLoading) {
@@ -105,16 +95,7 @@ export const CharactersListScreen = () => {
             <Error
                 message="Please check your internet connection and try again"
                 onRetry={refresh}
-                buttonText="Try again"
             />
-        );
-    }
-
-    if (isConnected && characters.length === 0 && !loading && !error) {
-        return (
-            <View style={containerStyle}>
-                <Text>{noDataMessage}</Text>
-            </View>
         );
     }
 
@@ -129,6 +110,12 @@ export const CharactersListScreen = () => {
                 onEndReached={isConnected ? loadMore : undefined}
                 ListFooterComponent={ListFooterComponent}
                 ListEmptyComponent={ListEmptyComponent}
+                getItemLayout={getItemLayout}
+                windowSize={optimizedParams.windowSize}
+                initialNumToRender={optimizedParams.initialNumToRender}
+                maxToRenderPerBatch={optimizedParams.maxToRenderPerBatch}
+                updateCellsBatchingPeriod={50}
+                removeClippedSubviews={true}
             />
         </View>
     );

@@ -1,5 +1,5 @@
 import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
-import { ThemeContext } from '@/theme/ThemeContext';
+import { useTheme } from '@/hooks/useTheme';
 import React from 'react';
 
 type ErrorProps = {
@@ -8,8 +8,8 @@ type ErrorProps = {
     buttonText?: string;
 };
 
-export const Error = ({ message, onRetry }: ErrorProps) => {
-    const { colors } = React.useContext(ThemeContext);
+export const Error = ({ message, onRetry, buttonText = "Retry" }: ErrorProps) => {
+    const { colors } = useTheme();
 
     return (
         <View style={styles.container}>
@@ -21,7 +21,7 @@ export const Error = ({ message, onRetry }: ErrorProps) => {
                     style={[styles.button, { backgroundColor: colors.card }]}
                     onPress={onRetry}
                 >
-                    <Text style={{ color: colors.text }}>Retry</Text>
+                    <Text style={{ color: colors.text }}>{buttonText}</Text>
                 </TouchableOpacity>
             )}
         </View>

@@ -1,9 +1,10 @@
+import { CharacterStatus, CharacterSpecies } from './constants';
 
 export type Character = {
     id: number;
     name: string;
-    status: string;
-    species: string;
+    status: CharacterStatus | string;
+    species: CharacterSpecies | string;
     type: string;
     gender: string;
     origin: {
@@ -21,7 +22,9 @@ export type Character = {
 }
 
 export type Filter = {
-    status: 'Alive' | 'Dead' | 'unknown' | '';
-    species: 'Alien' | 'Human' | '';
+    status: CharacterStatus | '';
+    species: CharacterSpecies | '';
 };
+
+export type Theme = 'light' | 'dark';
 
