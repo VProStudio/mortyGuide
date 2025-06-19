@@ -1,5 +1,5 @@
 import { ThemeProvider } from '@/theme/ThemeProvider';
-import { AppContent } from '@/components/AppContext';
+import { AppContent } from '@/components/AppContent';
 import React from 'react';
 import { Provider } from 'react-redux';
 import { store } from '@/store/store';
@@ -13,6 +13,3 @@ export default function App() {
     </Provider>
   );
 }
-
-
-

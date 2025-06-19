@@ -6,32 +6,34 @@ import { ThemeContext } from './ThemeContext';
 import type { Theme } from '@/utils/types';
 
 export const ThemeProvider = ({ children }: { children: React.ReactNode }) => {
-    const [theme, setTheme] = useState<Theme>('light');
+  const [theme, setTheme] = useState<Theme>('light');
 
-    useEffect(() => {
-        const loadTheme = async () => {
-            const savedTheme = await AsyncStorage.getItem('theme');
-            if (savedTheme) {
-                setTheme(savedTheme as Theme);
-            } else {
-                const systemTheme = Appearance.getColorScheme() || 'light';
-                setTheme(systemTheme === 'dark' ? 'dark' : 'light');
-            }
-        };
-        loadTheme();
-    }, []);
-
-    const toggleTheme = async () => {
-        const newTheme = theme === 'light' ? 'dark' : 'light';
-        await AsyncStorage.setItem('theme', newTheme);
-        setTheme(newTheme);
+  useEffect(() => {
+    const loadTheme = async () => {
+      const savedTheme = await AsyncStorage.getItem('theme');
+      if (savedTheme) {
+        setTheme(savedTheme as Theme);
+      } else {
+        const systemTheme = Appearance.getColorScheme() || 'light';
+        setTheme(systemTheme === 'dark' ? 'dark' : 'light');
+      }
     };
+    loadTheme();
+  }, []);
 
-    const currentColors = theme === 'light' ? colors.light : colors.dark;
+  const toggleTheme = async () => {
+    const newTheme = theme === 'light' ? 'dark' : 'light';
+    await AsyncStorage.setItem('theme', newTheme);
+    setTheme(newTheme);
+  };
 
-    return (
-        <ThemeContext.Provider value={{ theme, toggleTheme, colors: currentColors }}>
-            {children}
-        </ThemeContext.Provider>
-    );
+  const currentColors = theme === 'light' ? colors.light : colors.dark;
+
+  return (
+    <ThemeContext.Provider
+      value={{ theme, toggleTheme, colors: currentColors }}
+    >
+      {children}
+    </ThemeContext.Provider>
+  );
 };

@@ -6,68 +6,67 @@ import { useTheme } from '@/hooks/useTheme';
 import React, { useEffect, useMemo } from 'react';
 import type { Character } from '@/utils/types';
 
-
 export const CharactersDetailsScreen = () => {
-    const route = useRoute();
-    const { character } = route.params as { character: Character };
-    const { theme, colors } = useTheme();
+  const route = useRoute();
+  const { character } = route.params as { character: Character };
+  const { theme, colors } = useTheme();
 
-    const statusStyle = useMemo(() =>
-        getStatusStyle(character.status, theme),
-        [character.status, theme]
-    );
+  const statusStyle = useMemo(
+    () => getStatusStyle(character.status, theme),
+    [character.status, theme]
+  );
 
-    const navigation = useNavigation();
+  const navigation = useNavigation();
 
-    const characterDetails = [
-        { label: "Status", value: character.status },
-        { label: "Species", value: character.species },
-        { label: "Type", value: character.type, showIfEmpty: false },
-        { label: "Gender", value: character.gender },
-        { label: "Origin", value: character.origin?.name },
-        { label: "Location", value: character.location?.name },
-        { label: "Episodes", value: character.episode?.length || 0 }
-    ];
+  const characterDetails = [
+    { label: 'Status', value: character.status },
+    { label: 'Species', value: character.species },
+    { label: 'Type', value: character.type, showIfEmpty: false },
+    { label: 'Gender', value: character.gender },
+    { label: 'Origin', value: character.origin?.name },
+    { label: 'Location', value: character.location?.name },
+    { label: 'Episodes', value: character.episode?.length || 0 },
+  ];
 
-    useEffect(() => {
-        navigation.setOptions({
-            title: character.name,
+  useEffect(() => {
+    navigation.setOptions({
+      title: character.name,
+    });
+  }, [navigation, character]);
 
-        });
-    }, [navigation, character]);
+  return (
+    <ScrollView style={{ backgroundColor: colors.background }}>
+      <View
+        style={[
+          cardStyles.detailInfoContainer,
+          {
+            backgroundColor: colors.card,
+            shadowColor: colors.text,
+          },
+        ]}
+      >
+        <Image
+          source={{ uri: character.image }}
+          style={[cardStyles.imageDetails, statusStyle]}
+          resizeMode="cover"
+        />
 
-    return (
-        <ScrollView style={{ backgroundColor: colors.background }}>
-            <View style={[
-                cardStyles.detailInfoContainer,
-                {
-                    backgroundColor: colors.card,
-                    shadowColor: colors.text,
-                }
-            ]}>
-                <Text style={[cardStyles.id, { color: colors.text }]}>ID: {character.id}</Text>
+        {characterDetails.map((detail, index) => (
+          <DetailRow
+            key={index}
+            label={detail.label}
+            value={detail.value}
+            showIfEmpty={detail.showIfEmpty}
+          />
+        ))}
 
-                <Image
-                    source={{ uri: character.image }}
-                    style={[{ width: '100%', height: 300, marginVertical: 10, borderRadius: 8, marginBottom: 50 },
-                        statusStyle
-                    ]}
-                    resizeMode="cover"
-                />
-
-                {characterDetails.map((detail, index) => (
-                    <DetailRow
-                        key={index}
-                        label={detail.label}
-                        value={detail.value}
-                        showIfEmpty={detail.showIfEmpty}
-                    />
-                ))}
-
-                <Text style={[cardStyles.created, { color: colors.text }]}>
-                    Created: {character.created ? new Date(character.created).toLocaleDateString() : 'Unknown'}
-                </Text>
-            </View>
-        </ScrollView>
-    );
-}
+        <Text style={[cardStyles.created, { color: colors.text }]}>
+          Created:{' '}
+          {character.created
+            ? new Date(character.created).toLocaleDateString()
+            : 'Unknown'}
+        </Text>
+      </View>
+    </ScrollView>
+  );
+};

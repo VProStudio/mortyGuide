@@ -6,14 +6,14 @@ import { StatusBar } from 'expo-status-bar';
 import React from 'react';
 
 export function AppContent() {
-    const { theme } = useTheme();
+  const { theme } = useTheme();
 
-    return (
-        <FontLoader>
-            <NavigationContainer>
-                <StatusBar style={theme === 'dark' ? 'light' : 'dark'} />
-                <AppNavigator />
-            </NavigationContainer>
-        </FontLoader>
-    );
+  return (
+    <FontLoader>
+      <NavigationContainer>
+        <StatusBar style={theme === 'dark' ? 'light' : 'dark'} />
+        <AppNavigator />
+      </NavigationContainer>
+    </FontLoader>
+  );
 }

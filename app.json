@@ -23,8 +23,6 @@
       "edgeToEdgeEnabled": true
     },
     "web": {},
-    "plugins": [
-      "expo-sqlite"
-    ]
+    "plugins": ["expo-sqlite"]
   }
 }

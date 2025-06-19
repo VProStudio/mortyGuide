@@ -1,4 +1,4 @@
-import { View, FlatList, Dimensions, useWindowDimensions } from 'react-native';
+import { View, FlatList, useWindowDimensions } from 'react-native';
 import { EmptyDataMessage } from '@/components/EmptyDataMessage';
 import { OfflineMessage } from '@/components/OfflineMessage';
 import { useNetworkStatus } from '@/hooks/useNetworkStatus';
@@ -13,110 +13,98 @@ import { Error } from '@/components/Error';
 import type { Character } from '@/utils/types';
 
 export const CharactersListScreen = () => {
-    const { colors } = useTheme();
-    const { characters, loading, error, filters, setFilters, loadMore, refresh } = useCharacters();
-    const { isConnected } = useNetworkStatus();
-    const {
-        offlineData,
-        offlineLoading,
-        offlineError,
-        resetOfflineError
-    } = useOfflineData(isConnected, characters);
+  const { colors } = useTheme();
+  const { characters, loading, error, filters, setFilters, loadMore, refresh } =
+    useCharacters();
+  const { isConnected } = useNetworkStatus();
+  const { offlineData, offlineLoading, offlineError, resetOfflineError } =
+    useOfflineData(isConnected, characters);
 
-    const { width, height } = useWindowDimensions();
+  const { width, height } = useWindowDimensions();
 
-    const itemHeight = useMemo(() => {
-        return width > 600 ? 180 : 150;
-    }, [width]);
+  const itemHeight = useMemo(() => {
+    return width > 600 ? 180 : 150;
+  }, [width]);
 
-    const optimizedParams = useMemo(() => {
-        const itemsPerScreen = Math.ceil(height / itemHeight);
+  const optimizedParams = useMemo(() => {
+    const itemsPerScreen = Math.ceil(height / itemHeight);
 
-        return {
-            initialNumToRender: itemsPerScreen + 2,
-            windowSize: Math.max(5, Math.ceil(itemsPerScreen / 2)),
-            maxToRenderPerBatch: Math.max(5, Math.ceil(itemsPerScreen / 3)),
-        };
-    }, [height, itemHeight]);
+    return {
+      initialNumToRender: itemsPerScreen + 2,
+      windowSize: Math.max(5, Math.ceil(itemsPerScreen / 2)),
+      maxToRenderPerBatch: Math.max(5, Math.ceil(itemsPerScreen / 3)),
+    };
+  }, [height, itemHeight]);
 
-    const noDataMessage = "No data to display";
+  const noDataMessage = 'No data to display';
 
-    const displayData = useMemo(() =>
-        isConnected ? characters : offlineData,
-        [isConnected, characters, offlineData]
-    );
+  const displayData = useMemo(
+    () => (isConnected ? characters : offlineData),
+    [isConnected, characters, offlineData]
+  );
 
-    const containerStyle = useMemo(() => ({
-        flex: 1,
-        backgroundColor: colors.background
-    }), [colors.background]);
+  const containerStyle = useMemo(
+    () => ({
+      flex: 1,
+      backgroundColor: colors.background,
+    }),
+    [colors.background]
+  );
 
-    const renderItem = useCallback(({ item }: { item: Character }) =>
-        <CharacterCard character={item} />,
-        []
-    );
+  const renderItem = useCallback(
+    ({ item }: { item: Character }) => <CharacterCard character={item} />,
+    []
+  );
 
-    const keyExtractor = useCallback((item: Character) =>
-        item.id.toString(),
-        []
-    );
+  const keyExtractor = useCallback((item: Character) => item.id.toString(), []);
 
-    const getItemLayout = useCallback(
-        (_: any, index: number) => ({
-            length: itemHeight,
-            offset: itemHeight * index,
-            index,
-        }),
-        [itemHeight]
-    );
+  const ListFooterComponent = useMemo(
+    () => (loading || (!isConnected && offlineLoading) ? <Loader /> : null),
+    [loading, isConnected, offlineLoading]
+  );
 
-    const ListFooterComponent = useMemo(() =>
-        (loading || (!isConnected && offlineLoading)) ? <Loader /> : null,
-        [loading, isConnected, offlineLoading]
-    );
+  const ListEmptyComponent = useMemo(
+    () =>
+      !loading && !offlineLoading && displayData.length === 0 ? (
+        <EmptyDataMessage message={noDataMessage} />
+      ) : null,
+    [loading, offlineLoading, displayData.length]
+  );
 
-    const ListEmptyComponent = useMemo(() =>
-        !loading && !offlineLoading && displayData.length === 0
-            ? <EmptyDataMessage message={noDataMessage} />
-            : null,
-        [loading, offlineLoading, displayData.length]
-    );
+  if (error && isConnected) {
+    return <Error message={error} onRetry={refresh} />;
+  }
 
-    if (error && isConnected) {
-        return <Error message={error} onRetry={refresh} />;
-    }
+  if (!isConnected && offlineError && !offlineLoading) {
+    return <Error message={offlineError} onRetry={resetOfflineError} />;
+  }
 
-    if (!isConnected && offlineError && !offlineLoading) {
-        return <Error message={offlineError} onRetry={resetOfflineError} />;
-    }
-
-    if (!isConnected && offlineData.length === 0 && !offlineLoading) {
-        return (
-            <Error
-                message="Please check your internet connection and try again"
-                onRetry={refresh}
-            />
-        );
-    }
-
+  if (!isConnected && offlineData.length === 0 && !offlineLoading) {
     return (
-        <View style={containerStyle}>
-            {!isConnected && offlineData.length > 0 && <OfflineMessage />}
-            <FilterBar filters={filters} onChange={setFilters} />
-            <FlatList
-                data={displayData}
-                keyExtractor={keyExtractor}
-                renderItem={renderItem}
-                onEndReached={isConnected ? loadMore : undefined}
-                ListFooterComponent={ListFooterComponent}
-                ListEmptyComponent={ListEmptyComponent}
-                getItemLayout={getItemLayout}
-                windowSize={optimizedParams.windowSize}
-                initialNumToRender={optimizedParams.initialNumToRender}
-                maxToRenderPerBatch={optimizedParams.maxToRenderPerBatch}
-                updateCellsBatchingPeriod={50}
-                removeClippedSubviews={true}
-            />
-        </View>
+      <Error
+        message="Please check your internet connection and try again"
+        onRetry={refresh}
+      />
     );
+  }
+
+  return (
+    <View style={containerStyle}>
+      {!isConnected && offlineData.length > 0 && <OfflineMessage />}
+      <FilterBar filters={filters} onChange={setFilters} />
+      <FlatList
+        data={displayData}
+        keyExtractor={keyExtractor}
+        renderItem={renderItem}
+        onEndReached={isConnected ? loadMore : undefined}
+        ListFooterComponent={ListFooterComponent}
+        ListEmptyComponent={ListEmptyComponent}
+        windowSize={optimizedParams.windowSize}
+        initialNumToRender={optimizedParams.initialNumToRender}
+        maxToRenderPerBatch={optimizedParams.maxToRenderPerBatch}
+        updateCellsBatchingPeriod={50}
+        removeClippedSubviews={true}
+      />
+    </View>
+  );
 };
