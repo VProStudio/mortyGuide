@@ -54,8 +54,9 @@ const CharacterCardComponent = ({ character }: { character: Character }) => {
           style={[cardStyles.imageMain, statusStyle]}
         />
         <View style={cardStyles.column}>
-          <Text style={[cardStyles.charName, { color: colors.text }]}
-            numberOfLines={2}
+          <Text
+            style={[cardStyles.charName, { color: colors.text }]}
+            numberOfLines={3}
             adjustsFontSizeToFit={true}
             minimumFontScale={0.7}
           >

@@ -9,7 +9,7 @@ import type { Character } from '@/utils/types';
 
 export const useOfflineData = (
   isConnected: boolean,
-  onlineData: Character[]
+  onlineData: Character[],
 ) => {
   const [offlineData, setOfflineData] = useState<Character[]>([]);
   const [offlineLoading, setOfflineLoading] = useState(true);
@@ -19,7 +19,7 @@ export const useOfflineData = (
   useEffect(() => {
     if (!isWeb) {
       initDatabase().catch((err) =>
-        console.error('Error initializing database:', err)
+        console.error('Error initializing database:', err),
       );
     }
   }, []);
@@ -30,7 +30,7 @@ export const useOfflineData = (
       if (now - lastSaveTimeRef.current > 5000) {
         lastSaveTimeRef.current = now;
         saveCharactersToDB(onlineData).catch((err) =>
-          console.error('Error saving characters to DB:', err)
+          console.error('Error saving characters to DB:', err),
         );
       }
     }

@@ -13,7 +13,7 @@ export const CharactersDetailsScreen = () => {
 
   const statusStyle = useMemo(
     () => getStatusStyle(character.status, theme),
-    [character.status, theme]
+    [character.status, theme],
   );
 
   const navigation = useNavigation();

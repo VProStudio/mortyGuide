@@ -1,11 +1,12 @@
 import React from 'react';
+import { THEME, SWITCH_COLORS } from '@/utils/constants';
 import { View, Text, StyleSheet, Switch } from 'react-native';
 import { useTheme } from '@/hooks/useTheme';
 import packageInfo from '../package.json';
 
 export const SettingsScreen = () => {
   const { theme, toggleTheme, colors } = useTheme();
-  const isDarkMode = theme === 'dark';
+  const isDarkMode = theme === THEME.DARK;
 
   return (
     <View style={[styles.container, { backgroundColor: colors.background }]}>
@@ -18,8 +19,13 @@ export const SettingsScreen = () => {
         <Switch
           value={isDarkMode}
           onValueChange={toggleTheme}
-          trackColor={{ false: '#767577', true: '#81b0ff' }}
-          thumbColor={isDarkMode ? '#f5dd4b' : '#f4f3f4'}
+          trackColor={{
+            false: SWITCH_COLORS.TRACK_FALSE,
+            true: SWITCH_COLORS.TRACK_TRUE,
+          }}
+          thumbColor={
+            isDarkMode ? SWITCH_COLORS.THUMB_DARK : SWITCH_COLORS.THUMB_LIGHT
+          }
         />
       </View>
 

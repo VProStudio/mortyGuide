@@ -4,6 +4,7 @@ import { OfflineMessage } from '@/components/OfflineMessage';
 import { useNetworkStatus } from '@/hooks/useNetworkStatus';
 import { CharacterCard } from '@/components/CharacterCard';
 import { useOfflineData } from '@/hooks/useOfflineData';
+import { getErrorState } from '@/utils/errorHandling';
 import { useCharacters } from '@/hooks/useCharacter';
 import React, { useMemo, useCallback } from 'react';
 import { FilterBar } from '@/components/FilterBar';
@@ -40,7 +41,7 @@ export const CharactersListScreen = () => {
 
   const displayData = useMemo(
     () => (isConnected ? characters : offlineData),
-    [isConnected, characters, offlineData]
+    [isConnected, characters, offlineData],
   );
 
   const containerStyle = useMemo(
@@ -48,19 +49,19 @@ export const CharactersListScreen = () => {
       flex: 1,
       backgroundColor: colors.background,
     }),
-    [colors.background]
+    [colors.background],
   );
 
   const renderItem = useCallback(
     ({ item }: { item: Character }) => <CharacterCard character={item} />,
-    []
+    [],
   );
 
   const keyExtractor = useCallback((item: Character) => item.id.toString(), []);
 
   const ListFooterComponent = useMemo(
     () => (loading || (!isConnected && offlineLoading) ? <Loader /> : null),
-    [loading, isConnected, offlineLoading]
+    [loading, isConnected, offlineLoading],
   );
 
   const ListEmptyComponent = useMemo(
@@ -68,24 +69,21 @@ export const CharactersListScreen = () => {
       !loading && !offlineLoading && displayData.length === 0 ? (
         <EmptyDataMessage message={noDataMessage} />
       ) : null,
-    [loading, offlineLoading, displayData.length]
+    [loading, offlineLoading, displayData.length],
   );
 
-  if (error && isConnected) {
-    return <Error message={error} onRetry={refresh} />;
-  }
+  const { hasError, errorProps } = getErrorState(
+    error,
+    isConnected,
+    offlineError,
+    offlineLoading,
+    offlineData,
+    refresh,
+    resetOfflineError,
+  );
 
-  if (!isConnected && offlineError && !offlineLoading) {
-    return <Error message={offlineError} onRetry={resetOfflineError} />;
-  }
-
-  if (!isConnected && offlineData.length === 0 && !offlineLoading) {
-    return (
-      <Error
-        message="Please check your internet connection and try again"
-        onRetry={refresh}
-      />
-    );
+  if (hasError && errorProps) {
+    return <Error {...errorProps} />;
   }
 
   return (

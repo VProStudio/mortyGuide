@@ -19,7 +19,7 @@ interface DbRow {
 const executeDbOperation = async <T>(
   operation: () => Promise<T>,
   errorMessage: string,
-  defaultValue: T
+  defaultValue: T,
 ): Promise<T> => {
   if (isWeb) {
     console.warn('SQLite is not supported in the web version');
@@ -48,7 +48,7 @@ export const initDatabase = async (): Promise<void> => {
             `);
     },
     'Error creating table',
-    undefined
+    undefined,
   );
 };
 
@@ -58,12 +58,12 @@ export const clearCharacters = async (): Promise<void> => {
       await db!.runAsync('DELETE FROM characters;');
     },
     'Error clearing table',
-    undefined
+    undefined,
   );
 };
 
 export const saveCharactersToDB = async (
-  characters: DbCharacter[]
+  characters: DbCharacter[],
 ): Promise<void> => {
   return executeDbOperation(
     async () => {
@@ -82,12 +82,12 @@ export const saveCharactersToDB = async (
             character.status,
             character.species,
             character.image,
-          ]
+          ],
         );
       }
     },
     'Error saving characters',
-    undefined
+    undefined,
   );
 };
 
@@ -95,7 +95,7 @@ export const getCharactersFromDB = async (): Promise<Character[]> => {
   return executeDbOperation(
     async () => {
       const result = await db!.getAllAsync<DbRow>(
-        'SELECT * FROM characters ORDER BY id ASC LIMIT 20;'
+        'SELECT * FROM characters ORDER BY id ASC LIMIT 20;',
       );
 
       return result.map((row) => ({
@@ -120,6 +120,6 @@ export const getCharactersFromDB = async (): Promise<Character[]> => {
       }));
     },
     'Error retrieving characters',
-    []
+    [],
   );
 };

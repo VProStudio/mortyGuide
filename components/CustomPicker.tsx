@@ -1,4 +1,6 @@
 import { View, Text, StyleSheet, TouchableOpacity, Modal } from 'react-native';
+import { useResponsive } from '@/hooks/useResponsive';
+import { DropdownItem } from './DropdownItem';
 import { useTheme } from '@/hooks/useTheme';
 import React, { useState } from 'react';
 
@@ -19,10 +21,35 @@ export const CustomPicker: React.FC<CustomPickerProps> = ({
 }) => {
   const { colors } = useTheme();
   const [isOpen, setIsOpen] = useState(false);
+  const { isNarrow } = useResponsive();
 
   const selectedItem = value
     ? items.find((item) => item.value === value)
     : placeholder;
+
+  const pickerButtonStyle = [
+    styles.pickerButton,
+    {
+      backgroundColor: colors.card,
+      shadowColor: colors.text,
+    },
+  ];
+
+  const responsivePicker = {
+    basicText: {
+      fontSize: isNarrow ? 12 : 14,
+    },
+    arrow: {
+      right: isNarrow ? 5 : 10,
+    },
+  };
+
+  const handleItemPress = (itemValue: string) => {
+    onValueChange(itemValue);
+    setIsOpen(false);
+  };
+
+  const allItems = [placeholder, ...items];
 
   return (
     <View style={styles.container}>
@@ -31,17 +58,17 @@ export const CustomPicker: React.FC<CustomPickerProps> = ({
       )}
 
       <TouchableOpacity
-        style={[
-          styles.pickerButton,
-          {
-            backgroundColor: colors.card,
-            shadowColor: colors.text,
-          },
-        ]}
+        style={pickerButtonStyle}
         onPress={() => setIsOpen(true)}
       >
-        <Text style={{ color: colors.text }}>{selectedItem?.label}</Text>
-        <Text style={[styles.arrow, { color: colors.text }]}>▼</Text>
+        <Text style={[responsivePicker.basicText, { color: colors.text }]}>
+          {selectedItem?.label}
+        </Text>
+        <Text
+          style={[styles.arrow, responsivePicker.arrow, { color: colors.text }]}
+        >
+          ▼
+        </Text>
       </TouchableOpacity>
 
       <Modal
@@ -68,39 +95,13 @@ export const CustomPicker: React.FC<CustomPickerProps> = ({
               },
             ]}
           >
-            <TouchableOpacity
-              style={[
-                styles.dropdownItem,
-                value === placeholder.value && {
-                  backgroundColor: colors.pickerOption,
-                  borderBottomColor: colors.pickerElemBorder,
-                },
-              ]}
-              onPress={() => {
-                onValueChange(placeholder.value);
-                setIsOpen(false);
-              }}
-            >
-              <Text style={{ color: colors.text }}>{placeholder.label}</Text>
-            </TouchableOpacity>
-
-            {items.map((item) => (
-              <TouchableOpacity
+            {allItems.map((item) => (
+              <DropdownItem
                 key={item.value}
-                style={[
-                  styles.dropdownItem,
-                  value === item.value && {
-                    backgroundColor: colors.pickerOption,
-                    borderBottomColor: colors.pickerElemBorder,
-                  },
-                ]}
-                onPress={() => {
-                  onValueChange(item.value);
-                  setIsOpen(false);
-                }}
-              >
-                <Text style={{ color: colors.text }}>{item.label}</Text>
-              </TouchableOpacity>
+                item={item}
+                isSelected={value === item.value}
+                onPress={handleItemPress}
+              />
             ))}
           </View>
         </TouchableOpacity>
@@ -117,6 +118,9 @@ const styles = StyleSheet.create({
   container: {
     alignItems: 'center',
     flexDirection: 'row',
+    flex: 1,
+    maxWidth: 240,
+    minWidth: 120,
   },
   dropdown: {
     borderRadius: 4,
@@ -131,15 +135,10 @@ const styles = StyleSheet.create({
     top: '40%',
     width: 120,
   },
-  dropdownItem: {
-    alignItems: 'center',
-    borderBottomWidth: 1,
-    padding: 10,
-  },
   label: {
     fontSize: 18,
     fontWeight: 'bold',
-    marginRight: 8,
+    marginRight: 4,
     textAlign: 'center',
   },
   modalOverlay: {
@@ -151,13 +150,14 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     borderRadius: 4,
     elevation: 3,
+    flex: 1,
     height: 40,
     justifyContent: 'center',
     marginHorizontal: 4,
+    maxWidth: 120,
     paddingHorizontal: 10,
     shadowOffset: { width: 0, height: 2 },
     shadowOpacity: 0.2,
     shadowRadius: 2,
-    width: 120,
   },
 });

@@ -7,7 +7,7 @@ const LAST_FETCH_KEY = 'lastFetch';
 const executeStorageOperation = async <T>(
   operation: () => Promise<T>,
   errorMessage: string,
-  defaultValue: T
+  defaultValue: T,
 ): Promise<T> => {
   try {
     return await operation();
@@ -23,7 +23,7 @@ export const saveFilters = async (filters: Filter): Promise<void> => {
       await AsyncStorage.setItem(FILTERS_KEY, JSON.stringify(filters));
     },
     'Error saving filters',
-    undefined
+    undefined,
   );
 };
 
@@ -34,7 +34,7 @@ export const getFilters = async (): Promise<Filter | null> => {
       return filtersJson ? JSON.parse(filtersJson) : null;
     },
     'Error retrieving filters',
-    null
+    null,
   );
 };
 
@@ -44,7 +44,7 @@ export const saveLastFetchTime = async (): Promise<void> => {
       await AsyncStorage.setItem(LAST_FETCH_KEY, Date.now().toString());
     },
     'Error saving last fetch time',
-    undefined
+    undefined,
   );
 };
 
@@ -55,6 +55,6 @@ export const getLastFetchTime = async (): Promise<number | null> => {
       return time ? parseInt(time, 10) : null;
     },
     'Error retrieving last fetch time',
-    null
+    null,
   );
 };

@@ -10,7 +10,7 @@ const { setCharacters, setPage, setFilters } = charactersActions;
 export const useCharacters = () => {
   const dispatch = useDispatch();
   const { page, filters, characters } = useSelector(
-    (state: RootState) => state.characters
+    (state: RootState) => state.characters,
   );
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -61,7 +61,7 @@ export const useCharacters = () => {
         }
       }
     } catch (err) {
-      setError(err instanceof Error ? err.message : 'Data loading error');
+      setError(err instanceof Error ? err.message : 'Data refreshing error');
     } finally {
       setLoading(false);
     }

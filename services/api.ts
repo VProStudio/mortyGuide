@@ -3,7 +3,7 @@ import type { Filter } from '@/utils/types';
 
 export const fetchCharacters = async (
   page = 1,
-  filters: Filter = { status: '', species: '' }
+  filters: Filter = { status: '', species: '' },
 ) => {
   try {
     const params = new URLSearchParams({

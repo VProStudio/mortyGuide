@@ -1,5 +1,5 @@
-import { StyleSheet } from 'react-native';
 import { CharacterStatus } from '@/utils/constants';
+import { StyleSheet } from 'react-native';
 
 export const colors = {
   light: {
@@ -86,12 +86,12 @@ export const cardStyles = StyleSheet.create({
     marginBottom: 16,
   },
   column: {
-    alignItems: 'flex-start',
+    alignItems: 'center',
+    flex: 1,
     flexDirection: 'column',
     justifyContent: 'center',
     marginBottom: 8,
-    paddingLeft: 40,
-    flex: 1,
+    paddingLeft: 15,
   },
   created: {
     fontSize: 12,
@@ -126,23 +126,20 @@ export const cardStyles = StyleSheet.create({
     width: 150,
   },
   label: {
-
     fontSize: 17,
-    fontWeight: '500',
     marginRight: 8,
-    width: 80,
-    flex: 1,
-  },
-  value: {
-    fontFamily: 'CustomFont',
-    fontSize: 19,
-    fontWeight: '500',
-    marginRight: 8,
-    flex: 1
   },
   row: {
-    alignItems: 'center',
     flexDirection: 'row',
+    flexWrap: 'wrap',
     marginBottom: 8,
+    maxWidth: '100%',
+    minWidth: '85%',
+  },
+  value: {
+    flex: 1,
+    fontFamily: 'CustomFont',
+    fontSize: 17.5,
+    marginRight: 8,
   },
 });

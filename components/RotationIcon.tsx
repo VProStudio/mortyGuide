@@ -23,7 +23,7 @@ export const RotatingIcon: FC<RotatingIconProps> = ({
           duration: 3000,
           easing: Easing.linear,
           useNativeDriver: true,
-        })
+        }),
       ).start();
     } else {
       rotateAnim.setValue(0);

@@ -1,5 +1,6 @@
 import Icon from 'react-native-vector-icons/Ionicons';
 import { TouchableOpacity, StyleSheet } from 'react-native';
+import { THEME, THEME_ICONS } from '@/utils/constants';
 import { useTheme } from '@/hooks/useTheme';
 import React from 'react';
 
@@ -9,7 +10,7 @@ export const ThemeSwitcher = () => {
   return (
     <TouchableOpacity style={styles.container} onPress={toggleTheme}>
       <Icon
-        name={theme === 'light' ? 'moon-outline' : 'sunny-outline'}
+        name={theme === THEME.LIGHT ? THEME_ICONS.MOON : THEME_ICONS.SUN}
         size={24}
         color={colors.text}
       />

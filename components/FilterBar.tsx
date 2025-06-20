@@ -50,6 +50,7 @@ export const FilterBar: React.FC<FilterBarProps> = ({ filters, onChange }) => {
 
 const styles = StyleSheet.create({
   container: {
+    alignContent: 'center',
     borderBottomWidth: 1,
     flexDirection: 'row',
     gap: 10,
