@@ -1,4 +1,5 @@
 import { CharacterStatus } from '@/utils/constants';
+import { FONT_GROUPS } from '@/utils/constants';
 import { StyleSheet } from 'react-native';
 
 export const colors = {
@@ -82,7 +83,7 @@ export const cardStyles = StyleSheet.create({
   },
   charName: {
     fontFamily: 'CustomTitleFont',
-    fontSize: 24,
+    fontSize: FONT_GROUPS.NORMAL.NAME,
     marginBottom: 16,
   },
   column: {
@@ -94,11 +95,14 @@ export const cardStyles = StyleSheet.create({
     paddingLeft: 15,
   },
   created: {
-    fontSize: 12,
+    fontSize: FONT_GROUPS.NORMAL.SYSTEM,
     marginTop: 16,
-    textAlign: 'right',
+    position: 'absolute',
+    bottom: 20,
+    right: 20,
   },
   detailInfoContainer: {
+    alignContent: 'center',
     borderRadius: 8,
     elevation: 3,
     flex: 1,
@@ -109,11 +113,13 @@ export const cardStyles = StyleSheet.create({
     shadowRadius: 2,
   },
   imageDetails: {
+    alignSelf: 'center',
     borderRadius: 8,
-    height: 300,
-    marginBottom: 50,
+    maxWidth: 730,
+    marginBottom: 10,
     marginVertical: 10,
     width: '100%',
+    aspectRatio: 1,
   },
   imageMain: {
     borderRadius: 5,
@@ -126,7 +132,7 @@ export const cardStyles = StyleSheet.create({
     width: 150,
   },
   label: {
-    fontSize: 17,
+    fontSize: FONT_GROUPS.NORMAL.CARD_TEXT,
     marginRight: 8,
   },
   row: {
@@ -139,7 +145,12 @@ export const cardStyles = StyleSheet.create({
   value: {
     flex: 1,
     fontFamily: 'CustomFont',
-    fontSize: 17.5,
+    fontSize: FONT_GROUPS.NORMAL.CARD_TEXT,
     marginRight: 8,
   },
+  detailsColumn: {
+    height: 250,
+    marginLeft: 30,
+    justifyContent: 'center',
+  }
 });

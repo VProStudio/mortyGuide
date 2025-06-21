@@ -1,3 +1,4 @@
+import { ResponsiveProvider } from '@/components/ResponsiveContext';
 import { NavigationContainer } from '@react-navigation/native';
 import { AppNavigator } from '@/navigation/AppNavigator';
 import { FontLoader } from '@/components/FontLoader';
@@ -9,11 +10,13 @@ export function AppContent() {
   const { theme } = useTheme();
 
   return (
-    <FontLoader>
-      <NavigationContainer>
-        <StatusBar style={theme === 'dark' ? 'light' : 'dark'} />
-        <AppNavigator />
-      </NavigationContainer>
-    </FontLoader>
+    <ResponsiveProvider>
+      <FontLoader>
+        <NavigationContainer>
+          <StatusBar style={theme === 'dark' ? 'light' : 'dark'} />
+          <AppNavigator />
+        </NavigationContainer>
+      </FontLoader>
+    </ResponsiveProvider>
   );
 }

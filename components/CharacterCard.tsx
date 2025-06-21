@@ -1,6 +1,7 @@
 import { View, Text, Image, TouchableOpacity } from 'react-native';
 import { cardStyles, getStatusStyle } from '@/theme/styles';
 import { useNavigation } from '@react-navigation/native';
+import { useResponsive } from '@/components/ResponsiveContext';
 import { DetailRow } from '@/components/DetailRow';
 import { useTheme } from '@/hooks/useTheme';
 import React from 'react';
@@ -16,8 +17,9 @@ type DetailsScreenNavigationProp = NativeStackNavigationProp<
 const CharacterCardComponent = ({ character }: { character: Character }) => {
   const navigation = useNavigation<DetailsScreenNavigationProp>();
   const { theme, colors } = useTheme();
-  const statusStyle = getStatusStyle(character.status, theme);
+  const { fonts, layout } = useResponsive();
 
+  const statusStyle = getStatusStyle(character.status, theme);
   const handlePress = () => {
     const completeCharacter: Character = {
       ...character,
@@ -38,6 +40,18 @@ const CharacterCardComponent = ({ character }: { character: Character }) => {
     { label: 'Species', value: character.species },
   ];
 
+  const responsiveCard = {
+    charName: {
+      fontSize: fonts.name,
+      marginLeft: layout.nameMarginLeft,
+      alignSelf: layout.nameAlign as 'center' | 'flex-start',
+    },
+    image: {
+      height: layout.imageHeight,
+      width: layout.imageWidth,
+    },
+  };
+
   return (
     <TouchableOpacity onPress={handlePress}>
       <View
@@ -51,11 +65,11 @@ const CharacterCardComponent = ({ character }: { character: Character }) => {
       >
         <Image
           source={{ uri: character.image }}
-          style={[cardStyles.imageMain, statusStyle]}
+          style={[cardStyles.imageMain, responsiveCard.image, statusStyle]}
         />
         <View style={cardStyles.column}>
           <Text
-            style={[cardStyles.charName, { color: colors.text }]}
+            style={[cardStyles.charName, responsiveCard.charName, { color: colors.text }]}
             numberOfLines={3}
             adjustsFontSizeToFit={true}
             minimumFontScale={0.7}

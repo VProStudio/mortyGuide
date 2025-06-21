@@ -11,6 +11,7 @@ const Tab = createBottomTabNavigator();
 
 export const AppNavigator = () => {
   const { colors } = useTheme();
+
   return (
     <Tab.Navigator
       screenOptions={{
@@ -48,9 +49,9 @@ export const AppNavigator = () => {
               source={
                 focused
                   ? // eslint-disable-next-line @typescript-eslint/no-require-imports
-                    require('@/resources/icons/bookOpened.png')
+                  require('@/resources/icons/bookOpened.png')
                   : // eslint-disable-next-line @typescript-eslint/no-require-imports
-                    require('@/resources/icons/bookClosed.png')
+                  require('@/resources/icons/bookClosed.png')
               }
               style={{
                 width: size,

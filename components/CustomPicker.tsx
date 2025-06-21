@@ -1,5 +1,5 @@
 import { View, Text, StyleSheet, TouchableOpacity, Modal } from 'react-native';
-import { useResponsive } from '@/hooks/useResponsive';
+import { useResponsive } from '@/components/ResponsiveContext';
 import { DropdownItem } from './DropdownItem';
 import { useTheme } from '@/hooks/useTheme';
 import React, { useState } from 'react';
@@ -21,7 +21,8 @@ export const CustomPicker: React.FC<CustomPickerProps> = ({
 }) => {
   const { colors } = useTheme();
   const [isOpen, setIsOpen] = useState(false);
-  const { isNarrow } = useResponsive();
+  const { fonts } = useResponsive();
+
 
   const selectedItem = value
     ? items.find((item) => item.value === value)
@@ -37,10 +38,10 @@ export const CustomPicker: React.FC<CustomPickerProps> = ({
 
   const responsivePicker = {
     basicText: {
-      fontSize: isNarrow ? 12 : 14,
+      fontSize: fonts.card,
     },
     arrow: {
-      right: isNarrow ? 5 : 10,
+      right: fonts.arrow,
     },
   };
 

@@ -37,3 +37,55 @@ export const THEME_ICONS = {
   MOON: 'moon-outline',
   SUN: 'sunny-outline',
 } as const;
+
+export const FONT_GROUPS = {
+  NARROW: {
+    NAME: 24,
+    CARD_TEXT: 15,
+    PICKER: 12,
+    SYSTEM: 14,
+    ARROW: 5,
+  },
+  NORMAL: {
+    NAME: 24,
+    CARD_TEXT: 17,
+    PICKER: 14,
+    SYSTEM: 14,
+    ARROW: 10,
+  },
+  WIDE: {
+    NAME: 40,
+    CARD_TEXT: 28,
+    PICKER: 14,
+    SYSTEM: 14,
+    ARROW: 10,
+  },
+
+} as const;
+
+export const LAYOUT_GROUPS = {
+  NORMAL: {
+    NAME_MARGIN_LEFT: 0,
+    NAME_ALIGN: 'center',
+    ROW_MARGIN_TOP: 0,
+    ROW: 'column',
+    IMAGE_WIDTH: 150,
+    IMAGE_HEIGHT: 150,
+  },
+  WIDE: {
+    NAME_MARGIN_LEFT: 130,
+    NAME_ALIGN: 'flex-start',
+    ROW_MARGIN_TOP: 0,
+    ROW: 'column',
+    IMAGE_WIDTH: 250,
+    IMAGE_HEIGHT: 250,
+  },
+  ULTRA_WIDE: {
+    NAME_MARGIN_LEFT: 130,
+    NAME_ALIGN: 'flex-start',
+    ROW_MARGIN_TOP: 300,
+    ROW: 'row',
+    IMAGE_WIDTH: 250,
+    IMAGE_HEIGHT: 250,
+  },
+} as const;

@@ -1,4 +1,4 @@
-import { useResponsive } from '@/hooks/useResponsive';
+import { useResponsive } from '@/components/ResponsiveContext';
 import { cardStyles } from '@/theme/styles';
 import { useTheme } from '@/hooks/useTheme';
 import { View, Text } from 'react-native';
@@ -16,11 +16,11 @@ const DetailRowComponent = ({
   showIfEmpty = true,
 }: DetailRowProps) => {
   const { colors } = useTheme();
-  const { isNarrow } = useResponsive();
+  const { fonts } = useResponsive();
 
-  const responsiveCard = {
+  const responsiveRow = {
     basicText: {
-      fontSize: isNarrow ? 15 : 17,
+      fontSize: fonts.card
     },
   };
 
@@ -31,7 +31,7 @@ const DetailRowComponent = ({
       <Text
         style={[
           cardStyles.label,
-          responsiveCard.basicText,
+          responsiveRow.basicText,
           { color: colors.text },
         ]}
       >
@@ -40,7 +40,7 @@ const DetailRowComponent = ({
       <Text
         style={[
           cardStyles.value,
-          responsiveCard.basicText,
+          responsiveRow.basicText,
           { color: colors.text },
         ]}
         numberOfLines={3}

@@ -1,6 +1,7 @@
+import { View, Text, TouchableOpacity, Image, StyleSheet } from 'react-native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { CharactersDetailsScreen } from '@/screens/CharDetailsScreen';
-import { View, Text, TouchableOpacity, Image, StyleSheet } from 'react-native';
+import { useResponsive } from '@/components/ResponsiveContext';
 import { CharactersListScreen } from '@/screens/CharListScreen';
 import { useTheme } from '@/hooks/useTheme';
 import React from 'react';
@@ -15,6 +16,12 @@ const Stack = createNativeStackNavigator();
 
 export const MainStack = () => {
   const { colors } = useTheme();
+  const { fonts } = useResponsive();
+  const responsiveName = {
+    charNameDetails: {
+      fontSize: fonts.name,
+    },
+  }
   return (
     <Stack.Navigator initialRouteName="Characters">
       <Stack.Screen
@@ -46,6 +53,7 @@ export const MainStack = () => {
                 <Text
                   style={[
                     cardStyles.charName,
+                    responsiveName.charNameDetails,
                     styles.charNameLocal,
                     { color: colors.text },
                   ]}

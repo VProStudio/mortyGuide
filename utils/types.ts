@@ -27,3 +27,4 @@ export type Filter = {
 };
 
 export type Theme = 'light' | 'dark';
+
