@@ -1,3 +1,4 @@
+// Individual dropdown item component with selection state and theme support
 import { TouchableOpacity, Text, StyleSheet } from 'react-native';
 import { useTheme } from '@/hooks/useTheme';
 import React from 'react';

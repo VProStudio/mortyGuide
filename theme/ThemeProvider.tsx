@@ -1,3 +1,4 @@
+// Theme provider component with persistent storage and system theme detection
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import React, { useState, useEffect } from 'react';
 import { Appearance } from 'react-native';
@@ -8,6 +9,7 @@ import type { Theme } from '@/utils/types';
 export const ThemeProvider = ({ children }: { children: React.ReactNode }) => {
   const [theme, setTheme] = useState<Theme>('light');
 
+  // Load saved theme from storage or detect system theme on app startup
   useEffect(() => {
     const loadTheme = async () => {
       const savedTheme = await AsyncStorage.getItem('theme');

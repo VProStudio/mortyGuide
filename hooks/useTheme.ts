@@ -1,3 +1,4 @@
+// Custom hook for accessing theme context with error handling
 import { ThemeContext } from '@/theme/ThemeContext';
 import { useContext } from 'react';
 

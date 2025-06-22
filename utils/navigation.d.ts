@@ -1,3 +1,4 @@
+// TypeScript definitions for React Navigation routes and parameters
 import type { Character } from '@/utils/types';
 
 export type RootStackParamList = {

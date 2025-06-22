@@ -1,3 +1,4 @@
+// Reusable component for displaying label-value pairs in character cards and details
 import { useResponsive } from '@/components/ResponsiveContext';
 import { cardStyles } from '@/theme/styles';
 import { useTheme } from '@/hooks/useTheme';
@@ -20,7 +21,7 @@ const DetailRowComponent = ({
 
   const responsiveRow = {
     basicText: {
-      fontSize: fonts.card
+      fontSize: fonts.card,
     },
   };
 

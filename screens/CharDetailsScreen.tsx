@@ -1,3 +1,4 @@
+// Character details screen displaying full information about selected character
 import { useRoute, useNavigation } from '@react-navigation/native';
 import { View, Text, ScrollView, Image } from 'react-native';
 import { cardStyles, getStatusStyle } from '@/theme/styles';
@@ -13,24 +14,25 @@ export const CharactersDetailsScreen = () => {
   const { theme, colors } = useTheme();
   const { layout, fonts } = useResponsive();
 
+  // Memoized status-based styling for character image border and shadow
   const statusStyle = useMemo(
     () => getStatusStyle(character.status, theme),
     [character.status, theme],
   );
 
   const responsiveDetails = {
-
     container: {
       flexDirection: layout.row as 'column' | 'row',
     },
     detailsContainer: {
       paddingTop: layout.rowMarginTop,
-    }
+    },
+    systemFontSize: {
+      fontSize: fonts.system,
+    },
   };
 
-
-  const navigation = useNavigation();
-
+  // Configuration array for character details to be displayed as rows
   const characterDetails = [
     { label: 'Status', value: character.status },
     { label: 'Species', value: character.species },
@@ -41,6 +43,9 @@ export const CharactersDetailsScreen = () => {
     { label: 'Episodes', value: character.episode?.length || 0 },
   ];
 
+  const navigation = useNavigation();
+
+  // Dynamically set screen title to character name
   useEffect(() => {
     navigation.setOptions({
       title: character.name,
@@ -51,7 +56,8 @@ export const CharactersDetailsScreen = () => {
     <ScrollView style={{ backgroundColor: colors.background }}>
       <View
         style={[
-          cardStyles.detailInfoContainer, responsiveDetails.container,
+          cardStyles.detailInfoContainer,
+          responsiveDetails.container,
           {
             backgroundColor: colors.card,
             shadowColor: colors.text,
@@ -63,7 +69,9 @@ export const CharactersDetailsScreen = () => {
           style={[cardStyles.imageDetails, statusStyle]}
           resizeMode="cover"
         />
-        <View style={[cardStyles.detailsColumn, responsiveDetails.detailsContainer]}>
+        <View
+          style={[cardStyles.detailsColumn, responsiveDetails.detailsContainer]}
+        >
           {characterDetails.map((detail, index) => (
             <DetailRow
               key={index}
@@ -72,9 +80,14 @@ export const CharactersDetailsScreen = () => {
               showIfEmpty={detail.showIfEmpty}
             />
           ))}
-
         </View>
-        <Text style={[cardStyles.created, { color: colors.text }]}>
+        <Text
+          style={[
+            cardStyles.created,
+            responsiveDetails.systemFontSize,
+            { color: colors.text },
+          ]}
+        >
           Created:{' '}
           {character.created
             ? new Date(character.created).toLocaleDateString()

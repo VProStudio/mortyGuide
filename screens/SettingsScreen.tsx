@@ -1,19 +1,38 @@
-import React from 'react';
-import { THEME, SWITCH_COLORS } from '@/utils/constants';
+// Settings screen with theme toggle and app version display
+import { useResponsive } from '@/components/ResponsiveContext';
 import { View, Text, StyleSheet, Switch } from 'react-native';
+import { THEME, SWITCH_COLORS } from '@/utils/constants';
+import { cardStyles } from '@/theme/styles';
 import { useTheme } from '@/hooks/useTheme';
 import packageInfo from '../package.json';
+import React from 'react';
 
 export const SettingsScreen = () => {
   const { theme, toggleTheme, colors } = useTheme();
   const isDarkMode = theme === THEME.DARK;
+  const { fonts } = useResponsive();
+
+  const responsiveSettings = {
+    labelFontSize: {
+      fontSize: fonts.card,
+    },
+    systemFontSize: {
+      fontSize: fonts.system,
+    },
+  };
 
   return (
     <View style={[styles.container, { backgroundColor: colors.background }]}>
       <View
         style={[styles.settingRow, { borderBottomColor: colors.settingsRow }]}
       >
-        <Text style={[styles.settingText, { color: colors.text }]}>
+        <Text
+          style={[
+            cardStyles.label,
+            responsiveSettings.labelFontSize,
+            { color: colors.text },
+          ]}
+        >
           Dark theme
         </Text>
         <Switch
@@ -29,7 +48,13 @@ export const SettingsScreen = () => {
         />
       </View>
 
-      <Text style={[styles.version, { color: colors.text }]}>
+      <Text
+        style={[
+          cardStyles.version,
+          responsiveSettings.systemFontSize,
+          { color: colors.text },
+        ]}
+      >
         Version: {packageInfo.version}
       </Text>
     </View>
@@ -47,14 +72,5 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-between',
     paddingVertical: 12,
-  },
-  settingText: {
-    fontSize: 16,
-  },
-  version: {
-    fontSize: 12,
-    marginTop: 'auto',
-    padding: 16,
-    textAlign: 'center',
   },
 });

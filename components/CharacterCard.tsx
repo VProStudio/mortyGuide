@@ -1,3 +1,4 @@
+// Reusable character card component for displaying character info in lists with navigation to details
 import { View, Text, Image, TouchableOpacity } from 'react-native';
 import { cardStyles, getStatusStyle } from '@/theme/styles';
 import { useNavigation } from '@react-navigation/native';
@@ -25,6 +26,8 @@ const CharacterCardComponent = ({ character }: { character: Character }) => {
       ...character,
       type: character.type || '',
       gender: character.gender || '',
+
+      // Apply defensive programming - ensure all required fields have default values
       origin: character.origin || { name: 'Unknown', url: '' },
       location: character.location || { name: 'Unknown', url: '' },
       episode: character.episode || [],
@@ -69,13 +72,19 @@ const CharacterCardComponent = ({ character }: { character: Character }) => {
         />
         <View style={cardStyles.column}>
           <Text
-            style={[cardStyles.charName, responsiveCard.charName, { color: colors.text }]}
+            style={[
+              cardStyles.charName,
+              responsiveCard.charName,
+              { color: colors.text },
+            ]}
             numberOfLines={3}
             adjustsFontSizeToFit={true}
             minimumFontScale={0.7}
           >
             {character.name}
           </Text>
+
+          {/* Render character details (Status, Species) as DetailRow components */}
           {cardDetails.map((detail, index) => (
             <DetailRow key={index} label={detail.label} value={detail.value} />
           ))}

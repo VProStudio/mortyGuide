@@ -1,9 +1,11 @@
+// AsyncStorage service for persisting user preferences and app state across sessions
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import type { Filter } from '@/utils/types';
 
 const FILTERS_KEY = 'filters';
 const LAST_FETCH_KEY = 'lastFetch';
 
+// Generic wrapper for AsyncStorage operations with centralized error handling
 const executeStorageOperation = async <T>(
   operation: () => Promise<T>,
   errorMessage: string,

@@ -1,3 +1,4 @@
+// Component for displaying empty state message when no data is available
 import { View, Text, StyleSheet } from 'react-native';
 import { useTheme } from '@/hooks/useTheme';
 import React from 'react';

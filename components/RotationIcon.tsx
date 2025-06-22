@@ -1,5 +1,7 @@
+// Reusable animated icon component with conditional rotation based on active state
 import { Image, Animated, Easing, ImageSourcePropType } from 'react-native';
 import { useEffect, useRef, FC } from 'react';
+import { GEAR_ROTATION } from '@/utils/constants';
 import React from 'react';
 
 interface RotatingIconProps {
@@ -15,12 +17,13 @@ export const RotatingIcon: FC<RotatingIconProps> = ({
 }) => {
   const rotateAnim = useRef(new Animated.Value(0)).current;
 
+  // Continuous rotation
   useEffect(() => {
     if (isActive) {
       Animated.loop(
         Animated.timing(rotateAnim, {
-          toValue: 1,
-          duration: 3000,
+          toValue: GEAR_ROTATION.END_VALUE,
+          duration: GEAR_ROTATION.DURATION,
           easing: Easing.linear,
           useNativeDriver: true,
         }),

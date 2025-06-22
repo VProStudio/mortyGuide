@@ -38,6 +38,24 @@ export const THEME_ICONS = {
   SUN: 'sunny-outline',
 } as const;
 
+export const GEAR_ROTATION = {
+  END_VALUE: 1,
+  DURATION: 3000,
+} as const;
+
+export const PORTAL = {
+  PULSE: {
+    SCALE_UP: 1.2,
+    SCALE_DOWN: 1.0,
+    DURATION_UP: 800,
+    DURATION_DOWN: 600,
+  },
+  ROTATION: {
+    END_VALUE: 1,
+    DURATION: 3000,
+  },
+} as const;
+
 export const FONT_GROUPS = {
   NARROW: {
     NAME: 24,
@@ -48,7 +66,7 @@ export const FONT_GROUPS = {
   },
   NORMAL: {
     NAME: 24,
-    CARD_TEXT: 17,
+    CARD_TEXT: 18,
     PICKER: 14,
     SYSTEM: 14,
     ARROW: 10,
@@ -60,7 +78,6 @@ export const FONT_GROUPS = {
     SYSTEM: 14,
     ARROW: 10,
   },
-
 } as const;
 
 export const LAYOUT_GROUPS = {

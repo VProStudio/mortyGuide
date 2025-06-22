@@ -1,3 +1,4 @@
+// App content component separated from App.tsx for better code organization and readability
 import { ResponsiveProvider } from '@/components/ResponsiveContext';
 import { NavigationContainer } from '@react-navigation/native';
 import { AppNavigator } from '@/navigation/AppNavigator';

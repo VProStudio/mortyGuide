@@ -1,3 +1,4 @@
+// Hook for monitoring network connectivity status in real-time
 import NetInfo from '@react-native-community/netinfo';
 import { useState, useEffect } from 'react';
 

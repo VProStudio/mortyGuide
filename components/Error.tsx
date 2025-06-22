@@ -1,3 +1,4 @@
+// Universal error component with optional retry functionality for error handling
 import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
 import { useTheme } from '@/hooks/useTheme';
 import React from 'react';
@@ -20,6 +21,8 @@ export const Error = ({
       <Text style={[styles.message, { color: colors.text }]}>
         {message || 'An error occurred'}
       </Text>
+
+      {/* Conditionally render retry button if onRetry function is provided */}
       {onRetry && (
         <TouchableOpacity
           style={[styles.button, { backgroundColor: colors.offlineMessage }]}

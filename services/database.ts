@@ -1,12 +1,14 @@
+// SQLite database service for offline character data caching with web platform compatibility
 import { openDatabaseSync } from 'expo-sqlite';
 import { isWeb } from '@/utils/platform';
 import type { Character } from '@/utils/types';
 
+// Initialize SQLite database for mobile platforms, null for web (SQLite not supported)
 const db = isWeb ? null : openDatabaseSync('RickAndMorty.db');
 
-type DbCharacter = Character & { id: number };
-
 const MAX_CACHED_CHARACTERS = 20;
+
+type DbCharacter = Character & { id: number };
 
 interface DbRow {
   id: number;
@@ -16,16 +18,25 @@ interface DbRow {
   image: string;
 }
 
+// Generic wrapper for database operations with web compatibility and error handling
 const executeDbOperation = async <T>(
   operation: () => Promise<T>,
   errorMessage: string,
   defaultValue: T,
 ): Promise<T> => {
+  // Check if database is properly initialized
+  if (!db) {
+    console.error('Database is not initialized');
+    return defaultValue;
+  }
+
+  // Skip database operations on web platform and return default value
   if (isWeb) {
     console.warn('SQLite is not supported in the web version');
     return defaultValue;
   }
 
+  // Execute database operation with centralized error logging
   try {
     return await operation();
   } catch (error) {
@@ -55,6 +66,7 @@ export const initDatabase = async (): Promise<void> => {
 export const clearCharacters = async (): Promise<void> => {
   return executeDbOperation(
     async () => {
+      // Clear existing data before saving new characters (replace strategy)
       await db!.runAsync('DELETE FROM characters;');
     },
     'Error clearing table',
@@ -70,6 +82,7 @@ export const saveCharactersToDB = async (
       await initDatabase();
       await db!.runAsync('DELETE FROM characters;');
 
+      // Limit cached characters to prevent excessive storage usage
       const charactersToSave = characters.slice(0, MAX_CACHED_CHARACTERS);
       if (charactersToSave.length === 0) return;
 
@@ -98,6 +111,7 @@ export const getCharactersFromDB = async (): Promise<Character[]> => {
         'SELECT * FROM characters ORDER BY id ASC LIMIT 20;',
       );
 
+      // Transform database rows to full Character objects with default values for missing fields
       return result.map((row) => ({
         id: row.id,
         name: row.name,

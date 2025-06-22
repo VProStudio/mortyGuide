@@ -1,3 +1,4 @@
+// Main app navigation with bottom tab bar containing Main and Settings screens
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { getFocusedRouteNameFromRoute } from '@react-navigation/native';
 import { SettingsScreen } from '@/screens/SettingsScreen';
@@ -14,6 +15,7 @@ export const AppNavigator = () => {
 
   return (
     <Tab.Navigator
+      // Configure consistent styling for tab navigation with platform-specific adjustments
       screenOptions={{
         tabBarStyle: {
           backgroundColor: colors.tabBar,
@@ -49,9 +51,9 @@ export const AppNavigator = () => {
               source={
                 focused
                   ? // eslint-disable-next-line @typescript-eslint/no-require-imports
-                  require('@/resources/icons/bookOpened.png')
+                    require('@/resources/icons/bookOpened.png')
                   : // eslint-disable-next-line @typescript-eslint/no-require-imports
-                  require('@/resources/icons/bookClosed.png')
+                    require('@/resources/icons/bookClosed.png')
               }
               style={{
                 width: size,

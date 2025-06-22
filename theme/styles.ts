@@ -95,10 +95,10 @@ export const cardStyles = StyleSheet.create({
     paddingLeft: 15,
   },
   created: {
+    bottom: 20,
     fontSize: FONT_GROUPS.NORMAL.SYSTEM,
     marginTop: 16,
     position: 'absolute',
-    bottom: 20,
     right: 20,
   },
   detailInfoContainer: {
@@ -112,14 +112,19 @@ export const cardStyles = StyleSheet.create({
     shadowOpacity: 0.2,
     shadowRadius: 2,
   },
+  detailsColumn: {
+    height: 250,
+    justifyContent: 'center',
+    marginLeft: 30,
+  },
   imageDetails: {
     alignSelf: 'center',
+    aspectRatio: 1,
     borderRadius: 8,
-    maxWidth: 730,
     marginBottom: 10,
     marginVertical: 10,
+    maxWidth: 730,
     width: '100%',
-    aspectRatio: 1,
   },
   imageMain: {
     borderRadius: 5,
@@ -142,15 +147,19 @@ export const cardStyles = StyleSheet.create({
     maxWidth: '100%',
     minWidth: '85%',
   },
+  settingText: {
+    fontSize: 16,
+  },
   value: {
     flex: 1,
     fontFamily: 'CustomFont',
     fontSize: FONT_GROUPS.NORMAL.CARD_TEXT,
     marginRight: 8,
   },
-  detailsColumn: {
-    height: 250,
-    marginLeft: 30,
-    justifyContent: 'center',
-  }
+  version: {
+    fontSize: FONT_GROUPS.NORMAL.SYSTEM,
+    marginTop: 'auto',
+    padding: 16,
+    textAlign: 'center',
+  },
 });

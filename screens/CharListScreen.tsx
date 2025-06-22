@@ -1,3 +1,4 @@
+// Main screen displaying paginated list of characters with filtering, offline support and performance optimizations
 import { View, FlatList, useWindowDimensions } from 'react-native';
 import { EmptyDataMessage } from '@/components/EmptyDataMessage';
 import { OfflineMessage } from '@/components/OfflineMessage';
@@ -15,18 +16,20 @@ import type { Character } from '@/utils/types';
 
 export const CharactersListScreen = () => {
   const { colors } = useTheme();
+  const { isConnected } = useNetworkStatus();
+  const { width, height } = useWindowDimensions();
+
   const { characters, loading, error, filters, setFilters, loadMore, refresh } =
     useCharacters();
-  const { isConnected } = useNetworkStatus();
+
   const { offlineData, offlineLoading, offlineError, resetOfflineError } =
     useOfflineData(isConnected, characters);
-
-  const { width, height } = useWindowDimensions();
 
   const itemHeight = useMemo(() => {
     return width > 600 ? 180 : 150;
   }, [width]);
 
+  // Calculate FlatList performance parameters based on screen dimensions
   const optimizedParams = useMemo(() => {
     const itemsPerScreen = Math.ceil(height / itemHeight);
 
@@ -37,8 +40,7 @@ export const CharactersListScreen = () => {
     };
   }, [height, itemHeight]);
 
-  const noDataMessage = 'No data to display';
-
+  // Switch between online API data and offline cached data based on connection status
   const displayData = useMemo(
     () => (isConnected ? characters : offlineData),
     [isConnected, characters, offlineData],
@@ -57,8 +59,10 @@ export const CharactersListScreen = () => {
     [],
   );
 
+  // Extract unique string key from character ID for FlatList optimization
   const keyExtractor = useCallback((item: Character) => item.id.toString(), []);
 
+  // Show loader at bottom of list during data loading (online or offline)
   const ListFooterComponent = useMemo(
     () => (loading || (!isConnected && offlineLoading) ? <Loader /> : null),
     [loading, isConnected, offlineLoading],
@@ -67,12 +71,12 @@ export const CharactersListScreen = () => {
   const ListEmptyComponent = useMemo(
     () =>
       !loading && !offlineLoading && displayData.length === 0 ? (
-        <EmptyDataMessage message={noDataMessage} />
+        <EmptyDataMessage message={'No data to display'} />
       ) : null,
     [loading, offlineLoading, displayData.length],
   );
 
-  const { hasError, errorProps } = getErrorState(
+  const { hasError, errorProps } = getErrorState({
     error,
     isConnected,
     offlineError,
@@ -80,7 +84,7 @@ export const CharactersListScreen = () => {
     offlineData,
     refresh,
     resetOfflineError,
-  );
+  });
 
   if (hasError && errorProps) {
     return <Error {...errorProps} />;

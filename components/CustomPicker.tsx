@@ -1,3 +1,4 @@
+// Custom dropdown picker component for filtering with theme and responsive design support
 import { View, Text, StyleSheet, TouchableOpacity, Modal } from 'react-native';
 import { useResponsive } from '@/components/ResponsiveContext';
 import { DropdownItem } from './DropdownItem';
@@ -23,7 +24,7 @@ export const CustomPicker: React.FC<CustomPickerProps> = ({
   const [isOpen, setIsOpen] = useState(false);
   const { fonts } = useResponsive();
 
-
+  // Find selected item by value or use placeholder if no selection
   const selectedItem = value
     ? items.find((item) => item.value === value)
     : placeholder;
@@ -45,15 +46,18 @@ export const CustomPicker: React.FC<CustomPickerProps> = ({
     },
   };
 
+  // Handle item selection: update parent component and close dropdown
   const handleItemPress = (itemValue: string) => {
     onValueChange(itemValue);
     setIsOpen(false);
   };
 
+  // Combine placeholder with filter items for dropdown rendering
   const allItems = [placeholder, ...items];
 
   return (
     <View style={styles.container}>
+      {/* Conditionally render label if provided */}
       {label && (
         <Text style={[styles.label, { color: colors.text }]}>{label}</Text>
       )}

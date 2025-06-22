@@ -1,3 +1,4 @@
+// Stack navigator for main app flow: Characters list and Details screens
 import { View, Text, TouchableOpacity, Image, StyleSheet } from 'react-native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { CharactersDetailsScreen } from '@/screens/CharDetailsScreen';
@@ -17,11 +18,13 @@ const Stack = createNativeStackNavigator();
 export const MainStack = () => {
   const { colors } = useTheme();
   const { fonts } = useResponsive();
+
   const responsiveName = {
     charNameDetails: {
       fontSize: fonts.name,
     },
-  }
+  };
+
   return (
     <Stack.Navigator initialRouteName="Characters">
       <Stack.Screen
@@ -58,6 +61,7 @@ export const MainStack = () => {
                     { color: colors.text },
                   ]}
                 >
+                  {/* Display character name or fallback to 'Details' if data is missing */}
                   {params?.character?.name || 'Details'}
                 </Text>
               </View>

@@ -1,3 +1,4 @@
+// Component for displaying offline status notification when no internet connection is available
 import { View, Text, StyleSheet } from 'react-native';
 import { useTheme } from '@/hooks/useTheme';
 import React from 'react';

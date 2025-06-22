@@ -1,3 +1,4 @@
+// Custom hook for managing character data with pagination, filtering, and state management
 import { charactersActions } from '@/store/characterSlice';
 import { useDispatch, useSelector } from 'react-redux';
 import { fetchCharacters } from '@/services/api';
@@ -21,6 +22,7 @@ export const useCharacters = () => {
     dispatch(setFilters(updatedFilters));
   };
 
+  // Load next page of characters and append to existing list
   const loadMore = async () => {
     try {
       if (hasReachedEnd) return;
@@ -33,6 +35,7 @@ export const useCharacters = () => {
         dispatch(setCharacters([...characters, ...data.results]));
         dispatch(setPage(page + 1));
 
+        // Check if we've reached the last page to prevent further loading
         if (data.info && page + 1 >= data.info.pages) {
           setHasReachedEnd(true);
         }
@@ -44,6 +47,7 @@ export const useCharacters = () => {
     }
   };
 
+  // Reset and reload characters from first page with current filters
   const refresh = async () => {
     try {
       setLoading(true);
@@ -67,6 +71,7 @@ export const useCharacters = () => {
     }
   };
 
+  // Auto-refresh data when filters change
   useEffect(() => {
     refresh();
   }, [filters]);

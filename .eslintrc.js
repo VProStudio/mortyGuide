@@ -11,6 +11,10 @@ module.exports = {
   plugins: ['@typescript-eslint', 'react', 'react-native'],
   rules: {
     'react/react-in-jsx-scope': 'off',
+    'no-var': 'error',
+    '@typescript-eslint/no-unused-vars': 'error',
+    'prefer-const': 'error',
+    'react-native/no-inline-styles': 'warn',
   },
   settings: {
     react: { version: 'detect' },

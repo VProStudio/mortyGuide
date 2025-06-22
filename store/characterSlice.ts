@@ -1,3 +1,5 @@
+// Redux slice for managing characters state including data, pagination, and filters
+
 import { createSlice } from '@reduxjs/toolkit';
 import type { Character, Filter } from '@/utils/types';
 

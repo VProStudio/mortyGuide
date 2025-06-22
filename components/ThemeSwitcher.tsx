@@ -1,3 +1,4 @@
+// Theme toggle button component that switches between light and dark modes
 import Icon from 'react-native-vector-icons/Ionicons';
 import { TouchableOpacity, StyleSheet } from 'react-native';
 import { THEME, THEME_ICONS } from '@/utils/constants';

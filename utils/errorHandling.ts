@@ -1,3 +1,5 @@
+// Centralized error state logic for handling online/offline errors with appropriate retry actions
+
 type ErrorStateParams<T = unknown> = {
   error: string | null;
   isConnected: boolean;
@@ -30,10 +32,12 @@ export const getErrorState = <T>(
     resetOfflineError,
   } = params;
 
+  // Online API error - show error with refresh retry
   if (error && isConnected) {
     return { hasError: true, errorProps: { message: error, onRetry: refresh } };
   }
 
+  // Offline database error - show error with reset retry
   if (!isConnected && offlineError && !offlineLoading) {
     return {
       hasError: true,
@@ -41,6 +45,7 @@ export const getErrorState = <T>(
     };
   }
 
+  // No internet and no cached data - show connection message with refresh retry
   if (!isConnected && offlineData.length === 0 && !offlineLoading) {
     return {
       hasError: true,
@@ -51,5 +56,6 @@ export const getErrorState = <T>(
     };
   }
 
+  // No error conditions met - continue normal flow
   return { hasError: false, errorProps: null };
 };

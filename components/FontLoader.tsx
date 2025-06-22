@@ -1,3 +1,4 @@
+// Font loader wrapper component that ensures custom fonts are loaded before rendering children
 import { useFonts } from 'expo-font';
 import { View, StyleSheet } from 'react-native';
 import { ReactNode } from 'react';

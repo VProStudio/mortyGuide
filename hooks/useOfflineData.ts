@@ -1,3 +1,4 @@
+// Hook for managing offline data caching and retrieval from local database
 import {
   getCharactersFromDB,
   initDatabase,
@@ -16,7 +17,9 @@ export const useOfflineData = (
   const [offlineError, setOfflineError] = useState<string | null>(null);
   const lastSaveTimeRef = useRef(0);
 
+  // Initialize database tables on first app launch (mobile only)
   useEffect(() => {
+    // Skip database operations on web platform
     if (!isWeb) {
       initDatabase().catch((err) =>
         console.error('Error initializing database:', err),
@@ -24,6 +27,7 @@ export const useOfflineData = (
     }
   }, []);
 
+  // Throttled saving: cache online data with 5-second frequency limit
   useEffect(() => {
     if (!isWeb && isConnected && onlineData.length > 0) {
       const now = Date.now();
@@ -36,6 +40,7 @@ export const useOfflineData = (
     }
   }, [isConnected, onlineData]);
 
+  // Load cached data from database when offline
   useEffect(() => {
     const loadOfflineData = async () => {
       setOfflineLoading(true);
